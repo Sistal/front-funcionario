@@ -1,4 +1,4 @@
-import Hero from "../components/Hero";
+import Hero from "../components/hero/Hero";
 import HomeLayout from "./HomeLayout";
 import data from "../data/home.json";
 

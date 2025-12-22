@@ -8,7 +8,7 @@ export default function RecentRequests({ requests }) {
             <tr>
               <th className="w-1/4">Fecha</th>
               <th className="w-1/4">Estado</th>
-              <th className="w-2/4">Descripción</th>
+              <th className="w-2/4">Descripci\u00f3n</th>
             </tr>
           </thead>
           <tbody className={'[&>tr]:border-t [&>tr]:border-gray-100'}>
@@ -30,3 +30,4 @@ export default function RecentRequests({ requests }) {
     </div>
   );
 }
+

@@ -5,7 +5,7 @@ export default function StatusCard({ counts }) {
     { name: 'Entregados', value: counts.entregados, color: '#10b981' },
     { name: 'En proceso', value: counts.enProceso, color: '#3b82f6' },
     { name: 'Pendientes', value: counts.pendientes, color: '#f59e0b' },
-    { name: 'Requieren acción', value: counts.requierenAccion, color: '#ef4444' },
+    { name: 'Requieren acci\u00f3n', value: counts.requierenAccion, color: '#ef4444' },
   ];
 
   return (
@@ -16,8 +16,8 @@ export default function StatusCard({ counts }) {
         <div className="mt-4 grid grid-cols-1 gap-2">
           <div className="flex items-center justify-between"><div className="flex items-center gap-2"><div className="w-3 h-3 bg-[#10b981] rounded-full"/> <div className="text-sm">Entregados</div></div><div className="text-sm">{counts.entregados}</div></div>
           <div className="flex items-center justify-between"><div className="flex items-center gap-2"><div className="w-3 h-3 bg-[#3b82f6] rounded-full"/> <div className="text-sm">En proceso de entrega</div></div><div className="text-sm">{counts.enProceso}</div></div>
-          <div className="flex items-center justify-between"><div className="flex items-center gap-2"><div className="w-3 h-3 bg-[#f59e0b] rounded-full"/> <div className="text-sm">Pendientes de aprobación</div></div><div className="text-sm">{counts.pendientes}</div></div>
-          <div className="flex items-center justify-between"><div className="flex items-center gap-2"><div className="w-3 h-3 bg-[#ef4444] rounded-full"/> <div className="text-sm">Requieren acción</div></div><div className="text-sm">{counts.requierenAccion}</div></div>
+          <div className="flex items-center justify-between"><div className="flex items-center gap-2"><div className="w-3 h-3 bg-[#f59e0b] rounded-full"/> <div className="text-sm">Pendientes de aprobaci\u00f3n</div></div><div className="text-sm">{counts.pendientes}</div></div>
+          <div className="flex items-center justify-between"><div className="flex items-center gap-2"><div className="w-3 h-3 bg-[#ef4444] rounded-full"/> <div className="text-sm">Requieren acci\u00f3n</div></div><div className="text-sm">{counts.requierenAccion}</div></div>
         </div>
       </div>
 
@@ -37,3 +37,4 @@ export default function StatusCard({ counts }) {
     </div>
   );
 }
+
