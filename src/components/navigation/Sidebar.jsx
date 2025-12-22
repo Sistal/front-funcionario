@@ -1,4 +1,4 @@
-import logo from "../assets/iconSistal.png";
+import logo from "../../assets/iconSistal.png";
 import { Home, FileText, RefreshCw, Truck, Building, User, LogOut } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
 
@@ -30,9 +30,10 @@ export default function Sidebar() {
       <div className={"flex-1 justify-end flex flex-col p-4"}>
         <NavLink to={'/'} className="flex items-center gap-2 p-2 rounded text-gray-700 hover:bg-gray-100 px-4 py-3 text-[14px]">
           <LogOut size={16} />
-          {"Cerrar sesión"}
+          {"Cerrar sesi\u00f3n"}
         </NavLink>
       </div>
     </aside>
   );
 }
+

@@ -9,7 +9,7 @@ export default function Shortcuts({ items }) {
 
             <div className="flex flex-col gap-3">
                 {items.map((it, idx) => {
-                    const Icon = Icons[idx] ?? LucidePlus; // fallback
+                    const Icon = Icons[idx] ?? LucidePlus;
                     return (
                         <button
                             key={idx}
@@ -24,3 +24,4 @@ export default function Shortcuts({ items }) {
         </div>
     );
 }
+

@@ -1,9 +1,9 @@
-import Tabs from "../components/Tabs";
-import RecentRequests from "../components/RecentRequests";
-import UpcomingDeliveries from "../components/UpcomingDeliveries";
-import Shortcuts from "../components/Shortcuts";
-import SizesCard from "../components/SizesCard";
-import StatusCard from "../components/StatusCard";
+import Tabs from "../components/layout/Tabs";
+import RecentRequests from "../components/requests/RecentRequests";
+import UpcomingDeliveries from "../components/requests/UpcomingDeliveries";
+import Shortcuts from "../components/shortcuts/Shortcuts";
+import SizesCard from "../components/cards/SizesCard";
+import StatusCard from "../components/cards/StatusCard";
 
 export default function HomeLayout({ data }) {
   return (

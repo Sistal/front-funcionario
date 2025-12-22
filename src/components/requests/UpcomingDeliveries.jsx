@@ -3,7 +3,7 @@ import {LucideBox} from "lucide-react";
 export default function UpcomingDeliveries({items}) {
   return (
     <div className="bg-white rounded-[14px] shadow p-6 flex flex-col gap-[28px] py-10">
-      <h3 className="text-[18px] mb-4">Próximas entregas</h3>
+      <h3 className="text-[18px] mb-4">Pr\u00f3ximas entregas</h3>
       <div className="flex flex-col gap-4">
         {items.map((it, idx) => (
           <div key={idx} className="flex items-center gap-3">

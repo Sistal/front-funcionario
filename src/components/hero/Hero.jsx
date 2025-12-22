@@ -1,5 +1,5 @@
-import headerBackground from "../assets/headerBackground.png";
-import CTAButton from "./CTAButton";
+import headerBackground from "../../assets/headerBackground.png";
+import CTAButton from "../shortcuts/CTAButton";
 
 export default function Hero({ data }) {
   const { title, subtitle, primary, secondary, svgPaths } = data;

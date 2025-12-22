@@ -1,5 +1,5 @@
-import Sidebar from "./Sidebar";
-import Header from "./Header";
+import Sidebar from "../navigation/Sidebar";
+import Header from "../layout/Header";
 import { Outlet } from 'react-router-dom';
 
 export default function Layout() {
@@ -15,3 +15,4 @@ export default function Layout() {
     </div>
   );
 }
+
