@@ -1,5 +1,5 @@
 import { Button } from '../ui/Button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../common/Select.jsx';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/Select.jsx';
 import { Plus } from 'lucide-react';
 
 export function FilterBar({ filters = {}, onChange }) {
@@ -13,10 +13,10 @@ export function FilterBar({ filters = {}, onChange }) {
         <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3 flex-1">
                 <Select value={filters.status ?? 'all'} onValueChange={handleChange('status')}>
-                    <SelectTrigger className="w-48 border-gray-200 focus-visible:none">
+                    <SelectTrigger className="w-48 border-gray-200">
                         <SelectValue placeholder="Estado" />
                     </SelectTrigger>
-                    <SelectContent className={'border-gray-200 bg-white'}>
+                    <SelectContent>
                         <SelectItem value="all">Todos los estados</SelectItem>
                         <SelectItem value="pending">Pendiente</SelectItem>
                         <SelectItem value="approved">Aprobado</SelectItem>
@@ -30,7 +30,7 @@ export function FilterBar({ filters = {}, onChange }) {
                     <SelectTrigger className="w-48 border-gray-200 ">
                         <SelectValue placeholder="Tipo de solicitud" />
                     </SelectTrigger>
-                    <SelectContent className={'border-gray-200 bg-white'}>
+                    <SelectContent>
                         <SelectItem value="all">Todos los tipos</SelectItem>
                         <SelectItem value="uniform">Uniforme completo</SelectItem>
                         <SelectItem value="replacement">Reposición</SelectItem>
@@ -43,7 +43,7 @@ export function FilterBar({ filters = {}, onChange }) {
                     <SelectTrigger className="w-48 border-gray-200 ">
                         <SelectValue placeholder="Periodo" />
                     </SelectTrigger>
-                    <SelectContent className={'border-gray-200 bg-white'}>
+                    <SelectContent>
                         <SelectItem value="all">Todo el periodo</SelectItem>
                         <SelectItem value="current-month">Mes actual</SelectItem>
                         <SelectItem value="last-3-months">Últimos 3 meses</SelectItem>
@@ -53,11 +53,10 @@ export function FilterBar({ filters = {}, onChange }) {
                 </Select>
             </div>
 
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold cursor-pointer">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold">
                 <Plus className="w-4 h-4 mr-2" />
                 Nueva solicitud
             </Button>
         </div>
     );
 }
-

@@ -87,3 +87,18 @@ blockquote {
   border-left: 3px solid rgb(226 232 240); /* slate-200 */
   color: rgb(51 65 85); /* slate-700 */
 }
+
+/* Small, safe override to ensure Select popovers remain interactive and keep their own scroll.
+   This is intentionally minimal to avoid interfering with global scroll-lock or modal behavior.
+*/
+[data-slot="select-content"] {
+  pointer-events: auto; /* allow clicks inside the popover */
+  z-index: 99999; /* ensure it sits above most UI elements */
+  overscroll-behavior: contain; /* prevent scroll from propagating to the page */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Keep select items explicitly clickable */
+[data-slot="select-content"] [data-slot="select-item"] {
+  cursor: pointer;
+}
