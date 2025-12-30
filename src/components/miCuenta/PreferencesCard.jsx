@@ -20,6 +20,8 @@ export function PreferencesCard() {
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
+        {/*
+        ***************  PENDIENTE DE CONFIGURACIÓN (Se podría descartar) ****************
         <div>
           <Label htmlFor="language" className="text-sm text-gray-700 mb-2 block">Idioma de la interfaz</Label>
           <Select value={language} onValueChange={setLanguage}>
@@ -33,6 +35,7 @@ export function PreferencesCard() {
             </SelectContent>
           </Select>
         </div>
+        */}
 
         <div>
           <Label className="text-sm text-gray-700 mb-3 block">Preferencias de notificaciones</Label>
