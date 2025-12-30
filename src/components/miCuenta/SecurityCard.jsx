@@ -11,7 +11,7 @@ export function SecurityCard() {
   const [isEditingEmail, setIsEditingEmail] = useState(false);
 
   const handleChangePassword = () => {
-    alert('Redirigiendo a la página de cambio de contraseña...');
+    alert('aplicar configuración.........');
   };
 
   const handleSaveRecoveryEmail = () => {
