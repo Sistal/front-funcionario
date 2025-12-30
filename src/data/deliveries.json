@@ -1,0 +1,73 @@
+[
+  {
+    "requestId": "SOL-2024-1547",
+    "dispatchDate": "13/12/2024",
+    "garments": "Chaqueta de invierno - Talla M",
+    "address": "Av. Libertador Bernardo O'Higgins 1234, Santiago Centro",
+    "status": "in-transit",
+    "estimatedDate": "22/12/2024",
+    "trackingCode": "8956234712",
+    "type": "full-uniform"
+  },
+  {
+    "requestId": "SOL-2024-1432",
+    "dispatchDate": "10/12/2024",
+    "garments": "Pantalón de trabajo - Talla M, Camisa corporativa - Talla M",
+    "address": "Av. Providencia 567, Providencia",
+    "status": "in-transit",
+    "estimatedDate": "18/12/2024",
+    "trackingCode": "8956234713",
+    "type": "replacement"
+  },
+  {
+    "requestId": "SOL-2024-1389",
+    "dispatchDate": "05/12/2024",
+    "garments": "Zapatos de seguridad - Talla 42",
+    "address": "Av. Apoquindo 3000, Las Condes",
+    "status": "delivered",
+    "estimatedDate": "10/12/2024",
+    "trackingCode": "8956234714",
+    "type": "full-uniform"
+  },
+  {
+    "requestId": "SOL-2024-1201",
+    "dispatchDate": "28/11/2024",
+    "garments": "Kit completo de invierno - Talla M (Chaqueta, Pantalón, Gorro)",
+    "address": "Av. Vicuña Mackenna 4567, Macul",
+    "status": "delivered",
+    "estimatedDate": "02/12/2024",
+    "trackingCode": "8956234715",
+    "type": "full-uniform"
+  },
+  {
+    "requestId": "SOL-2024-1156",
+    "dispatchDate": "20/11/2024",
+    "garments": "Chaleco reflectante - Talla L",
+    "address": "Av. Libertador Bernardo O'Higgins 1234, Santiago Centro",
+    "status": "delivered",
+    "estimatedDate": "25/11/2024",
+    "trackingCode": "8956234716",
+    "type": "size-change"
+  },
+  {
+    "requestId": "SOL-2024-1089",
+    "dispatchDate": "15/11/2024",
+    "garments": "Uniforme completo - Talla M (Camisa, Pantalón, Zapatos)",
+    "address": "Av. Providencia 567, Providencia",
+    "status": "delivered",
+    "estimatedDate": "20/11/2024",
+    "trackingCode": "8956234717",
+    "type": "full-uniform"
+  },
+  {
+    "requestId": "SOL-2024-0987",
+    "dispatchDate": "08/11/2024",
+    "garments": "Parka de invierno - Talla L",
+    "address": "Av. Apoquindo 3000, Las Condes",
+    "status": "delivered",
+    "estimatedDate": "13/11/2024",
+    "trackingCode": "8956234718",
+    "type": "replacement"
+  }
+]
+
