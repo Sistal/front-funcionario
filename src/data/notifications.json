@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "type": "approved",
+    "title": "Solicitud aprobada",
+    "message": "Tu solicitud #2024-0847 de uniforme ha sido aprobada y está en proceso de preparación.",
+    "timestamp": "Hace 5 minutos",
+    "isRead": false,
+    "actionLabel": "Ver solicitud"
+  },
+  {
+    "id": "2",
+    "type": "delivery",
+    "title": "Pedido listo para retiro",
+    "message": "Tu pedido #2024-0832 está disponible en Sucursal Centro. Tienes 5 días para retirarlo.",
+    "timestamp": "Hace 1 hora",
+    "isRead": false,
+    "actionLabel": "Ver detalles"
+  },
+  {
+    "id": "3",
+    "type": "alert",
+    "title": "Confirmación de entrega pendiente",
+    "message": "Debes confirmar la recepción de tu pedido #2024-0821 antes del 28 de diciembre.",
+    "timestamp": "Hace 3 horas",
+    "isRead": false,
+    "actionLabel": "Confirmar"
+  }
+]
+

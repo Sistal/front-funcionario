@@ -7,6 +7,7 @@ import Cambio from "./pages/Cambio";
 import Seguimientos from "./pages/Seguimientos";
 import Sucursal from "./pages/Sucursal";
 import MiCuenta from "./pages/MiCuenta";
+import Notificaciones from "./pages/Notificaciones";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="seguimientos" element={<Seguimientos />} />
           <Route path="sucursal" element={<Sucursal />} />
           <Route path="mi-cuenta" element={<MiCuenta />} />
+          <Route path="notificaciones" element={<Notificaciones />} />
         </Route>
       </Routes>
     </BrowserRouter>
