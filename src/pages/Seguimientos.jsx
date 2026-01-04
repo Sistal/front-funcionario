@@ -1,8 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import deliveriesData from '../data/deliveries.json';
 import { parseDateDMY } from '../utils/date.js';
-import TrackingSidebar from './components/TrackingSidebar.jsx';
-import TrackingHeader from './components/TrackingHeader.jsx';
 import { DeliveryStatsCards } from './components/DeliveryStatsCards.jsx';
 import { DeliveryFilters } from './components/DeliveryFilters.jsx';
 import { DeliveriesTable } from './components/DeliveriesTable.jsx';
