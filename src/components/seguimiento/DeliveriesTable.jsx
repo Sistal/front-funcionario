@@ -1,7 +1,7 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/Table.jsx';
-import { Badge } from '../../components/ui/Badge.jsx';
-import { Button } from '../../components/ui/Button.jsx';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/Table.jsx';
+import { Badge } from '../ui/Badge.jsx';
+import { Button } from '../ui/Button.jsx';
 import { Eye, MapPin } from 'lucide-react';
 
 const statusConfig = {

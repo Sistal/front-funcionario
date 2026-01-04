@@ -1,5 +1,5 @@
 import React from 'react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/ui/Select.jsx';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/Select.jsx';
 
 export function DeliveryFilters({ status = 'all', type = 'all', period = '30-days', onChangeStatus = () => {}, onChangeType = () => {}, onChangePeriod = () => {} }) {
   return (

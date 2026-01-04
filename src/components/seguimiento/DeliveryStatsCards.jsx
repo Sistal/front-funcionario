@@ -1,7 +1,7 @@
 import React from 'react';
 import { Truck, Calendar, CheckCircle } from 'lucide-react';
 import deliveriesData from '../../data/deliveries.json';
-import { StatCard } from '../../components/cards/StatCard.jsx';
+import { StatCard } from '../cards/StatCard.jsx';
 import { parseDateDMY } from '../../utils/date.js';
 
 export function DeliveryStatsCards({ deliveries = deliveriesData }) {

@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import deliveriesData from '../data/deliveries.json';
 import { parseDateDMY } from '../utils/date.js';
-import { DeliveryStatsCards } from './components/DeliveryStatsCards.jsx';
-import { DeliveryFilters } from './components/DeliveryFilters.jsx';
-import { DeliveriesTable } from './components/DeliveriesTable.jsx';
-import { DeliveryDetailModal } from './components/DeliveryDetailModal.jsx';
+import { DeliveryStatsCards } from '../components/seguimiento/DeliveryStatsCards.jsx';
+import { DeliveryFilters } from '../components/seguimiento/DeliveryFilters.jsx';
+import { DeliveriesTable } from '../components/seguimiento/DeliveriesTable.jsx';
+import { DeliveryDetailModal } from '../components/seguimiento/DeliveryDetailModal.jsx';
 
 const mockDeliveries = deliveriesData;
 
