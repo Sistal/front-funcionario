@@ -1,6 +1,8 @@
 import logo from "../../assets/iconSistal.png";
 import { Home, FileText, RefreshCw, Truck, Building, User, LogOut } from 'lucide-react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import { ENV } from '../../config/env';
 
 const LINKS = [
   { label: "Inicio", url: "/", icon: Home },
@@ -12,6 +14,16 @@ const LINKS = [
 ];
 
 export default function Sidebar() {
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
+      logout();
+      // Redirigir al frontend de login
+      window.location.href = ENV.LOGIN_URL || 'http://localhost:5173';
+    }
+  };
+
   return (
     <aside className={"fixed left-0 top-0 bottom-0 w-64 flex flex-col border border-gray-200 bg-white z-30"}>
       <div className={'flex justify-center p-4'}>
@@ -28,10 +40,13 @@ export default function Sidebar() {
         ))}
       </ul>
       <div className={"flex-1 justify-end flex flex-col p-4"}>
-        <NavLink to={'/'} className="flex items-center gap-2 p-2 rounded text-gray-700 hover:bg-gray-100 px-4 py-3 text-[14px]">
+        <button 
+          onClick={handleLogout}
+          className="flex items-center gap-2 p-2 rounded text-gray-700 hover:bg-gray-100 px-4 py-3 text-[14px] w-full text-left"
+        >
           <LogOut size={16} />
-          {"Cerrar sesi\u00f3n"}
-        </NavLink>
+          {"Cerrar sesión"}
+        </button>
       </div>
     </aside>
   );

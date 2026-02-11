@@ -2,11 +2,17 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card.jsx';
 import { Button } from '../ui/Button.jsx';
 import { LogOut, AlertTriangle } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
+import { ENV } from '../../config/env';
 
 export function AccountActionsCard() {
+  const { logout } = useAuth();
+
   const handleLogout = () => {
     if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
-      alert('Cerrando sesión...');
+      logout();
+      // Redirigir al frontend de login
+      window.location.href = ENV.LOGIN_URL || 'http://localhost:5173';
     }
   };
 

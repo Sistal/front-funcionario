@@ -1,0 +1,51 @@
+# Dependencias
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist
+dist-ssr
+*.local
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# CI/CD
+.github
+
+# Testing
+coverage
+.nyc_output
+
+# Env files (se pasan como variables de entorno en Docker)
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local
+
+# Documentación
+*.md
+!README.md
+LICENSE
+
+# Config files
+.prettierrc
+.eslintrc*
+
