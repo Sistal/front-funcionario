@@ -4,7 +4,7 @@ import { NotificationsList } from '../components/notificaciones/NotificationsLis
 import notificationsData from '../data/notifications.json';
 import { Bell, CheckCircle, AlertCircle, RefreshCw, Package } from 'lucide-react';
 import { NotificationsActions } from '../components/notificaciones/Actions.jsx';
-import { getMyNotifications, markNotificationAsRead } from '../api/funcionario.api';
+import { notificationsApi } from '../api/notifications.api';
 
 export function Notificaciones() {
   const [activeFilter, setActiveFilter] = useState('all');
@@ -18,7 +18,7 @@ export function Notificaciones() {
   async function loadNotifications() {
     try {
       setLoading(true);
-      const data = await getMyNotifications();
+      const data = await notificationsApi.getAll();
       setNotifications(data);
     } catch (error) {
       console.error('Error loading notifications, using static data:', error);
@@ -49,7 +49,7 @@ export function Notificaciones() {
 
   const toggleRead = async (id) => {
     try {
-      await markNotificationAsRead(id);
+      await notificationsApi.markAsRead(id);
       setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: !n.isRead } : n));
     } catch (error) {
       console.error('Error marking notification as read:', error);
@@ -60,7 +60,7 @@ export function Notificaciones() {
 
   const markAllAsRead = async () => {
     try {
-      // Aquí deberías tener un endpoint para marcar todas como leídas
+      await notificationsApi.markAllAsRead();
       setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
     } catch (error) {
       console.error('Error marking all as read:', error);

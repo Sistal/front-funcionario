@@ -1,19 +1,27 @@
 import { ENV } from '../config/env';
 import storage from './storage';
 
-async function request(path, { method = 'GET', headers, body, baseURL } = {}) {
-  const url = `${baseURL || ENV.API_FUNCIONARIO_BASE}${path}`;
-  
-  // Get token from storage
-  const token = storage.getToken();
+async function request(path, { method = 'GET', headers, body } = {}) {
+  const url = `http://localhost:8080${path}`;
+  const requestHeaders = {
+    ...(body ? { 'Content-Type': 'application/json' } : null),
+    ...(headers || null),
+  };
+
+  console.log(`[HTTP Request]`, {
+    endpoint: path,
+    host: 'http://localhost:8080',
+    method,
+    headers: requestHeaders,
+    body: body || null,
+    credentials: 'include',
+    cookies: document.cookie,
+  });
 
   const res = await fetch(url, {
     method,
-    headers: {
-      ...(body ? { 'Content-Type': 'application/json' } : null),
-      ...(token ? { 'Authorization': `Bearer ${token}` } : null),
-      ...(headers || null),
-    },
+    credentials: 'include',
+    headers: requestHeaders,
     body: body ? JSON.stringify(body) : undefined,
   });
 

@@ -16,7 +16,6 @@ export function DeliveryDetailModal({ delivery, open = false, onClose = () => {}
           <p><strong>Prendas:</strong> {delivery.garments}</p>
           <p><strong>Dirección:</strong> {delivery.address}</p>
           <p><strong>Estado:</strong> {delivery.status}</p>
-          <p><strong>Fecha estimada:</strong> {delivery.estimatedDate}</p>
           <p><strong>Código rastreo:</strong> {delivery.trackingCode}</p>
         </div>
       </div>

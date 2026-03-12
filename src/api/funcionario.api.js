@@ -100,112 +100,49 @@ export function getMedidasHistorial(funcionarioId) {
   return http.get(`/api/v1/funcionarios/${funcionarioId}/medidas/historial`);
 }
 
-// ==================== SOLICITUDES (NO IMPLEMENTADO EN BACKEND) ====================
-
 /**
- * NOTA: Estos endpoints NO están implementados en el backend según API_CONTRACT.md
- * Se requiere implementación en ms-funcionario
+ * Obtener historial de cambio de sucursal
+ * Endpoint: GET /solicitudes/cambio-sucursal/historial
  */
-
-/**
- * Obtener solicitudes del funcionario autenticado
- * Endpoint esperado: GET /api/v1/funcionarios/me/solicitudes
- * Estado: ⚠️ NO IMPLEMENTADO EN BACKEND
- */
-export function getMySolicitudes(params) {
-  const query = new URLSearchParams(params).toString();
-  return http.get(`/api/v1/solicitudes${query ? `?${query}` : ''}`);
+export function getBranchChangeHistory() {
+  return http.get(`/solicitudes/cambio-sucursal/historial`);
 }
 
-/**
- * Crear una solicitud
- * Endpoint esperado: POST /api/v1/funcionarios/me/solicitudes
- * Estado: ⚠️ NO IMPLEMENTADO EN BACKEND
- */
-export function createSolicitud(data) {
-  return http.post('/api/v1/solicitudes', data);
-}
+// ==================== SOLICITUDES ====================
 
 /**
  * Obtener solicitudes recientes del dashboard
- * Endpoint esperado: GET /api/v1/funcionarios/me/solicitudes/recent
- * Estado: ⚠️ NO IMPLEMENTADO EN BACKEND
  */
 export function getRecentRequests() {
-  return http.get('/api/v1/solicitudes/recent');
+  return http.get('/solicitudes/recent');
 }
 
-// ==================== ENTREGAS/DESPACHOS (NO IMPLEMENTADO EN BACKEND) ====================
-
-/**
- * NOTA: Estos endpoints NO están implementados en el backend según API_CONTRACT.md
- * Se requiere implementación en ms-funcionario
- */
-
-/**
- * Obtener entregas/despachos del funcionario autenticado
- * Endpoint esperado: GET /api/v1/funcionarios/me/entregas
- * Estado: ⚠️ NO IMPLEMENTADO EN BACKEND
- */
-export function getMyEntregas(params) {
-  const query = new URLSearchParams(params).toString();
-  return http.get(`/api/v1/entregas${query ? `?${query}` : ''}`);
-}
+// ==================== ENTREGAS ====================
 
 /**
  * Obtener próximas entregas del dashboard
- * Endpoint esperado: GET /api/v1/funcionarios/me/entregas/upcoming
- * Estado: ⚠️ NO IMPLEMENTADO EN BACKEND
  */
 export function getUpcomingDeliveries() {
   return http.get('/api/v1/entregas/upcoming');
 }
 
-// ==================== CAMBIO DE SUCURSAL (NO IMPLEMENTADO EN BACKEND) ====================
+/**
+ * Obtener próximas entregas del dashboard
+ */
+export function getMyEntregas() {
+  return http.get('/api/v1/entregas');
+}
+
+// ==================== CAMBIO DE SUCURSAL ====================
 
 /**
  * Solicitar cambio de sucursal
- * Endpoint esperado: POST /api/v1/funcionarios/me/cambio-sucursal
- * Estado: ⚠️ NO IMPLEMENTADO EN BACKEND
  */
 export function requestCambioSucursal(data) {
-  return http.post('/api/v1/cambio-sucursal', data);
+  return http.post('/solicitudes/cambio-sucursal', data);
 }
 
-// ==================== NOTIFICACIONES (NO IMPLEMENTADO EN BACKEND) ====================
 
-/**
- * NOTA: Estos endpoints NO están implementados en el backend según API_CONTRACT.md
- * Se requiere implementación en ms-funcionario
- */
-
-/**
- * Obtener notificaciones del funcionario
- * Endpoint esperado: GET /api/v1/funcionarios/me/notifications
- * Estado: ⚠️ NO IMPLEMENTADO EN BACKEND
- */
-export function getMyNotifications(params) {
-  const query = new URLSearchParams(params).toString();
-  return http.get(`/api/v1/notifications${query ? `?${query}` : ''}`);
-}
-
-/**
- * Marcar notificación como leída
- * Endpoint esperado: PATCH /api/v1/funcionarios/me/notifications/{id}/read
- * Estado: ⚠️ NO IMPLEMENTADO EN BACKEND
- */
-export function markNotificationAsRead(notificationId) {
-  return http.patch(`/api/v1/notifications/${notificationId}/read`);
-}
-
-/**
- * Marcar todas las notificaciones como leídas
- * Endpoint esperado: PATCH /api/v1/funcionarios/me/notifications/read-all
- * Estado: ⚠️ NO IMPLEMENTADO EN BACKEND
- */
-export function markAllNotificationsAsRead() {
-  return http.patch('/api/v1/notifications/read-all');
-}
 
 // ==================== CRUD FUNCIONARIOS (ADMIN) ====================
 

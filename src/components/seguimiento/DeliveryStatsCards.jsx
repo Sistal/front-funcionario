@@ -10,7 +10,7 @@ export function DeliveryStatsCards({ deliveries = deliveriesData }) {
 
   const now = new Date();
   const future = deliveries
-    .map(d => ({...d, est: parseDateDMY(d.estimatedDate)}))
+    .map(d => ({...d, est: parseDateDMY(d.dispatchDate)}))
     .filter(d => d.est >= now)
     .sort((a,b)=>a.est-b.est);
 
@@ -27,7 +27,7 @@ export function DeliveryStatsCards({ deliveries = deliveriesData }) {
 
       <StatCard
         title="Próxima entrega"
-        value={next ? next.estimatedDate : '-'}
+        value={next ? next.dispatchDate : '-'}
         description={next ? next.garments : 'N/A'}
         variant="highlight"
         icon={<Calendar className="w-5 h-5 text-blue-600" />}

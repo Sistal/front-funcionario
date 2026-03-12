@@ -42,16 +42,6 @@ export function CurrentBranchCard() {
                       <span className="text-sm text-gray-900">Av. Libertador Bernardo O'Higgins 1234</span>
                   </div>
               </div>
-
-              <div className={'flex flex-col gap-2'}>
-                  <Label className="text-xs text-gray-600">Región</Label>
-                  <Input value="Región Metropolitana" readOnly className="mt-2 bg-gray-50 border border-gray-200"/>
-              </div>
-
-              <div className={'flex flex-col gap-2'}>
-                  <Label className="text-xs text-gray-600">Comuna</Label>
-                  <Input value="Santiago Centro" readOnly className="mt-2 bg-gray-50 border border-gray-200"/>
-              </div>
           </div>
       </CardContent>
     </Card>

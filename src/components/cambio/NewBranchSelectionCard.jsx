@@ -84,28 +84,8 @@ export function NewBranchSelectionCard() {
                     <div className="mt-2 flex items-start gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                       <MapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0"/>
                       <span className="text-sm text-gray-900">
-									{branch.address}
+									{branch.direccion}
 								</span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label className="text-xs text-gray-600">Región</Label>
-                      <Input
-                          value={branch.region}
-                          readOnly
-                          className="mt-2 bg-gray-50 border border-gray-200"
-                      />
-                    </div>
-
-                    <div>
-                      <Label className="text-xs text-gray-600">Comuna</Label>
-                      <Input
-                          value={branch.commune}
-                          readOnly
-                          className="mt-2 bg-gray-50 border border-gray-200"
-                      />
                     </div>
                   </div>
                 </>

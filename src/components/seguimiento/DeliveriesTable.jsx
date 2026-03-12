@@ -22,7 +22,6 @@ export function DeliveriesTable({ deliveries = [], onViewDetail = () => {} }) {
             <TableHead className="font-semibold text-gray-700">Prenda(s)</TableHead>
             <TableHead className="font-semibold text-gray-700">Dirección de entrega</TableHead>
             <TableHead className="font-semibold text-gray-700">Estado</TableHead>
-            <TableHead className="font-semibold text-gray-700">Fecha estimada</TableHead>
             <TableHead className="font-semibold text-gray-700 text-right">Acciones</TableHead>
           </TableRow>
         </TableHeader>
@@ -43,7 +42,6 @@ export function DeliveriesTable({ deliveries = [], onViewDetail = () => {} }) {
                   {statusConfig[delivery.status]?.label}
                 </Badge>
               </TableCell>
-              <TableCell className="text-gray-600">{delivery.estimatedDate}</TableCell>
               <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-2">
                   <Button

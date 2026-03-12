@@ -9,55 +9,55 @@ import { useNavigate } from 'react-router-dom';
 const mockNotifications = [
 	{
 		id: '1',
-		type: 'success',
+		type: 'approved',
 		title: 'Solicitud aprobada',
-		description:
+		message:
 			'Tu solicitud #2024-0847 ha sido aprobada y está en proceso de preparación.',
-		time: 'Hace 5 minutos',
-		read: false,
+		timestamp: 'Hace 5 minutos',
+		isRead: false,
 	},
 	{
 		id: '2',
-		type: 'info',
+		type: 'delivery',
 		title: 'Entrega programada',
-		description: 'Tu pedido será entregado el 20 de diciembre en la Sucursal Centro.',
-		time: 'Hace 1 hora',
-		read: false,
+		message: 'Tu pedido será entregado el 20 de diciembre en la Sucursal Centro.',
+		timestamp: 'Hace 1 hora',
+		isRead: false,
 	},
 	{
 		id: '3',
-		type: 'warning',
+		type: 'alert',
 		title: 'Documentación pendiente',
-		description:
+		message:
 			'Debes completar la documentación para tu solicitud de cambio de talla.',
-		time: 'Hace 3 horas',
-		read: false,
+		timestamp: 'Hace 3 horas',
+		isRead: false,
 	},
 	{
 		id: '4',
-		type: 'success',
+		type: 'update',
 		title: 'Entrega confirmada',
-		description:
+		message:
 			'Has recibido correctamente tu pedido #2024-0832. Gracias por confirmar.',
-		time: 'Hace 1 día',
-		read: true,
+		timestamp: 'Hace 1 día',
+		isRead: true,
 	},
 	{
 		id: '5',
-		type: 'info',
+		type: 'update',
 		title: 'Nueva temporada disponible',
-		description: 'Ya puedes solicitar uniformes de la temporada Verano 2025.',
-		time: 'Hace 2 días',
-		read: true,
+		message: 'Ya puedes solicitar uniformes de la temporada Verano 2025.',
+		timestamp: 'Hace 2 días',
+		isRead: true,
 	},
 	{
 		id: '6',
-		type: 'error',
+		type: 'alert',
 		title: 'Solicitud rechazada',
-		description:
+		message:
 			'Tu solicitud #2024-0820 fue rechazada. Revisa los comentarios del supervisor.',
-		time: 'Hace 3 días',
-		read: true,
+		timestamp: 'Hace 3 días',
+		isRead: true,
 	},
 ];
 
@@ -66,28 +66,28 @@ export function NotificationsPopover() {
 	const [open, setOpen] = useState(false);
 	const navigate = useNavigate();
 
-	const unreadCount = notifications.filter((n) => !n.read).length;
+	const unreadCount = notifications.filter((n) => !n.isRead).length;
 
 	const markAsRead = (id) => {
 		setNotifications((prev) =>
-			prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+			prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
 		);
 	};
 
 	const markAllAsRead = () => {
-		setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+		setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
 	};
 
 	const getIcon = (type) => {
 		switch (type) {
-			case 'success':
+			case 'approved':
 				return <CheckCircle className="w-5 h-5 text-green-600" />;
-			case 'warning':
+			case 'alert':
 				return <AlertCircle className="w-5 h-5 text-amber-600" />;
-			case 'info':
+			case 'update':
 				return <Package className="w-5 h-5 text-blue-600" />;
-			case 'error':
-				return <XCircle className="w-5 h-5 text-red-600" />;
+			case 'delivery':
+				return <Package className="w-5 h-5 text-purple-600" />;
 			default:
 				return <Bell className="w-5 h-5 text-gray-600" />;
 		}
@@ -95,14 +95,14 @@ export function NotificationsPopover() {
 
 	const getIconBgColor = (type) => {
 		switch (type) {
-			case 'success':
+			case 'approved':
 				return 'bg-green-50';
-			case 'warning':
+			case 'alert':
 				return 'bg-amber-50';
-			case 'info':
+			case 'update':
 				return 'bg-blue-50';
-			case 'error':
-				return 'bg-red-50';
+			case 'delivery':
+				return 'bg-purple-50';
 			default:
 				return 'bg-gray-50';
 		}
@@ -169,7 +169,7 @@ export function NotificationsPopover() {
 									<div key={notification.id}>
 										<div
 											className={`px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer ${
-												!notification.read ? 'bg-blue-50/30' : ''
+												!notification.isRead ? 'bg-blue-50/30' : ''
 											}`}
 											onClick={() => markAsRead(notification.id)}
 										>
@@ -188,16 +188,16 @@ export function NotificationsPopover() {
 															className={'text-sm font-medium text-gray-900'}>
 															{notification.title}
 														</h5>
-														{!notification.read && (
+														{!notification.isRead && (
 															<div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-1.5" />
 														)}
 													</div>
 													<p className="text-xs text-gray-600 mb-2 leading-relaxed">
-														{notification.description}
+														{notification.message}
 													</p>
 													<div className="flex items-center gap-1.5 text-xs text-gray-500">
 														<Clock className="w-3 h-3" />{' '}
-														<span>{notification.time}</span>
+														<span>{notification.timestamp}</span>
 													</div>
 												</div>
 											</div>

@@ -15,19 +15,13 @@ export function AuthProvider({ children }) {
   }, []);
 
   async function checkAuth() {
-    const token = storage.getToken();
     const savedUser = storage.getUser();
 
-    if (!token) {
-      setLoading(false);
-      return;
-    }
-
     try {
-      // Validar el token con el servidor
+      // Validar la sesión con el servidor (la cookie HTTP-only se envía automáticamente)
       const response = await validateToken();
       
-      if (response.valid) {
+      if (response && response.valid !== false) { // Asumimos que si no lanza error, o devuelve un ok, la sesión es válida
         setUser(savedUser);
         setIsAuthenticated(true);
       } else {
@@ -36,23 +30,24 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.error('Error validating token:', error);
       storage.clearAuth();
+      setIsAuthenticated(false);
+      setUser(null);
     } finally {
       setLoading(false);
     }
   }
 
-  function login(token, userData) {
-    storage.saveToken(token);
+  function login(userData) {
     storage.saveUser(userData);
     setUser(userData);
     setIsAuthenticated(true);
   }
 
-  function logout() {
+  async function logout() {
     storage.clearAuth();
     setUser(null);
     setIsAuthenticated(false);
-    logoutApi();
+    await logoutApi();
   }
 
   const value = {

@@ -1,15 +1,45 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card.jsx';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '../ui/Card.jsx';
 import { Label } from '../ui/Label.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/Select.jsx';
 import { Checkbox } from '../ui/Checkbox.jsx';
+import { Button } from '../ui/Button.jsx';
 import { Settings } from 'lucide-react';
+import { updatePreferences } from '../../api/funcionario.api.js';
 
 export function PreferencesCard() {
   const [language, setLanguage] = useState('es');
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [systemNotifications, setSystemNotifications] = useState(true);
   const [textSize, setTextSize] = useState('medium');
+  const [loading, setLoading] = useState(false);
+
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      const payload = {
+        notifications: {
+          email: emailNotifications,
+          push: systemNotifications,
+          sms: false
+        },
+        theme: "light",
+      };
+      const response = await updatePreferences(payload);
+      
+      // Capturar la respuesta para actualizar el estado local
+      if (response && response.notifications) {
+        setEmailNotifications(response.notifications.email);
+        setSystemNotifications(response.notifications.push);
+      }
+      alert('Preferencias guardadas exitosamente');
+    } catch (e) {
+      console.error(e);
+      alert('Error guardando preferencias');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Card>
@@ -66,6 +96,11 @@ export function PreferencesCard() {
             </SelectContent>
           </Select>
           <p className="text-xs text-gray-500 mt-2">Ajusta el tamaño del texto para mejorar la legibilidad</p>
+        </div>
+        <div className="pt-4 mt-6">
+          <Button onClick={handleSave} disabled={loading}>
+            {loading ? 'Guardando...' : 'Guardar preferencias'}
+          </Button>
         </div>
       </CardContent>
     </Card>

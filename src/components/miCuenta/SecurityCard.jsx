@@ -5,18 +5,29 @@ import { Input } from '../ui/Input.jsx';
 import { Button } from '../ui/Button.jsx';
 import { Separator } from '../ui/Separator.jsx';
 import { Shield, Mail, Lock, Info } from 'lucide-react';
+import { updateSecurity } from '../../api/funcionario.api.js';
 
 export function SecurityCard() {
   const [recoveryEmail, setRecoveryEmail] = useState('juan.perez.personal@gmail.com');
   const [isEditingEmail, setIsEditingEmail] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChangePassword = () => {
     alert('aplicar configuración.........');
   };
 
-  const handleSaveRecoveryEmail = () => {
-    setIsEditingEmail(false);
-    alert('Correo de recuperación actualizado correctamente');
+  const handleSaveRecoveryEmail = async () => {
+    try {
+      setLoading(true);
+      await updateSecurity({ recoveryEmail });
+      setIsEditingEmail(false);
+      alert('Correo de recuperación actualizado correctamente');
+    } catch (e) {
+      console.error(e);
+      alert('Error actualizando correo');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -47,6 +58,7 @@ export function SecurityCard() {
                 variant="outline"
                 onClick={() => setIsEditingEmail(true)}
                 className="whitespace-nowrap"
+                disabled={loading}
               >
                 Editar correo
               </Button>
@@ -54,8 +66,9 @@ export function SecurityCard() {
               <Button
                 onClick={handleSaveRecoveryEmail}
                 className="whitespace-nowrap bg-blue-600 hover:bg-blue-700"
+                disabled={loading}
               >
-                Guardar cambios
+                {loading ? 'Guardando...' : 'Guardar cambios'}
               </Button>
             )}
           </div>

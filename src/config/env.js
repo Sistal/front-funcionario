@@ -27,10 +27,9 @@ const getEnvValue = (key, defaultValue) => {
 
 export const ENV = {
   MODE: import.meta.env.MODE,
-  API_AUTH_BASE: getEnvValue('API_AUTH_BASE', 'http://localhost:8080'),
-  API_FUNCIONARIO_BASE: getEnvValue('API_FUNCIONARIO_BASE', 'http://localhost:8081'),
+  VITE_API_BASE: getEnvValue('VITE_API_BASE', 'http://localhost:8080'),
   LOGIN_URL: getEnvValue('LOGIN_URL', 'http://localhost:5173'),
-  USE_MOCK: getEnvValue('USE_MOCK', 'true') === 'true' || getEnvValue('USE_MOCK', 'true') === true,
+  USE_MOCK: getEnvValue('USE_MOCK', 'true'),
 };
 
 // Log de configuración en desarrollo
