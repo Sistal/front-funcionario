@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card.jsx';
 import { Label } from '../ui/Label.jsx';
 import { Input } from '../ui/Input.jsx';
 import { Building2, MapPin, Calendar } from 'lucide-react';
+import { formatDate } from '../../utils/date.js';
 
-export function CurrentBranchCard() {
+export function CurrentBranchCard({ branch, loading = false }) {
   return (
     <Card>
       <CardHeader>
@@ -24,14 +25,14 @@ export function CurrentBranchCard() {
           <div className="grid grid-cols-2 gap-4">
               <div className={'flex flex-col gap-2'}>
                   <Label className="text-xs text-gray-600">Sucursal actual</Label>
-                  <Input value="Sucursal Santiago Centro" readOnly className="mt-2 bg-gray-50 border border-gray-200"/>
+                  <Input value={loading ? 'Cargando...' : branch?.nombre_sucursal || '-'} readOnly className="mt-2 bg-gray-50 border border-gray-200"/>
               </div>
 
               <div className={'flex flex-col gap-2'}>
                   <Label className="text-xs text-gray-600">Fecha de última actualización</Label>
                   <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                       <Calendar className="w-4 h-4 text-gray-400"/>
-                      <span className="text-sm text-gray-900">15/03/2024</span>
+                      <span className="text-sm text-gray-900">{formatDate(new Date())}</span>
                   </div>
               </div>
 
@@ -39,7 +40,7 @@ export function CurrentBranchCard() {
                   <Label className="text-xs text-gray-600">Dirección</Label>
                   <div className="mt-2 flex items-start gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-md">
                       <MapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0"/>
-                      <span className="text-sm text-gray-900">Av. Libertador Bernardo O'Higgins 1234</span>
+                      <span className="text-sm text-gray-900">{branch?.direccion || '-'}</span>
                   </div>
               </div>
           </div>

@@ -6,14 +6,42 @@ import { Button } from '../ui/Button.jsx';
 import { Separator } from '../ui/Separator.jsx';
 import { Shield, Mail, Lock, Info } from 'lucide-react';
 import { updateSecurity } from '../../api/funcionario.api.js';
+import { changePassword } from '../../api/auth.api.js';
 
-export function SecurityCard() {
-  const [recoveryEmail, setRecoveryEmail] = useState('juan.perez.personal@gmail.com');
+export function SecurityCard({ profile }) {
+  const [recoveryEmail, setRecoveryEmail] = useState(profile?.recoveryEmail || '');
   const [isEditingEmail, setIsEditingEmail] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({
+    password_actual: '',
+    password_nueva: '',
+    password_confirmacion: '',
+  });
+  const [passwordLoading, setPasswordLoading] = useState(false);
 
-  const handleChangePassword = () => {
-    alert('aplicar configuración.........');
+  const handleChangePasswordField = (field) => (event) => {
+    setPasswordForm((current) => ({
+      ...current,
+      [field]: event.target.value,
+    }));
+  };
+
+  const handleChangePassword = async () => {
+    try {
+      setPasswordLoading(true);
+      await changePassword(passwordForm);
+      setPasswordForm({
+        password_actual: '',
+        password_nueva: '',
+        password_confirmacion: '',
+      });
+      window.alert('Contraseña actualizada correctamente');
+    } catch (error) {
+      console.error(error);
+      window.alert(error.message || 'No se pudo actualizar la contraseña');
+    } finally {
+      setPasswordLoading(false);
+    }
   };
 
   const handleSaveRecoveryEmail = async () => {
@@ -78,15 +106,37 @@ export function SecurityCard() {
         <Separator />
 
         <div>
-          <div className="flex items-start justify-between mb-3">
-            <div>
-              <Label className="text-xs text-gray-600 flex items-center gap-2 mb-2">
-                <Lock className="w-4 h-4" />
-                Contraseña
-              </Label>
-              <p className="text-sm text-gray-600">••••••••••••</p>
+          <div className="space-y-3">
+            <Label className="text-xs text-gray-600 flex items-center gap-2 mb-2">
+              <Lock className="w-4 h-4" />
+              Contraseña
+            </Label>
+            <Input
+              type="password"
+              value={passwordForm.password_actual}
+              onChange={handleChangePasswordField('password_actual')}
+              placeholder="Contraseña actual"
+              className="border border-gray-200"
+            />
+            <Input
+              type="password"
+              value={passwordForm.password_nueva}
+              onChange={handleChangePasswordField('password_nueva')}
+              placeholder="Nueva contraseña"
+              className="border border-gray-200"
+            />
+            <Input
+              type="password"
+              value={passwordForm.password_confirmacion}
+              onChange={handleChangePasswordField('password_confirmacion')}
+              placeholder="Confirmar nueva contraseña"
+              className="border border-gray-200"
+            />
+            <div className="flex justify-end">
+              <Button onClick={handleChangePassword} className="bg-blue-600 hover:bg-blue-700 text-white" disabled={passwordLoading}>
+                {passwordLoading ? 'Actualizando...' : 'Cambiar contraseña'}
+              </Button>
             </div>
-            <Button onClick={handleChangePassword} className="bg-blue-600 hover:bg-blue-700 text-white">Cambiar contraseña</Button>
           </div>
 
           <div className="flex gap-2 p-3 bg-blue-50 rounded-lg border border-blue-200">

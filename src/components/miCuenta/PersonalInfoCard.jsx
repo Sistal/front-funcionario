@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card.jsx';
 import { Label } from '../ui/Label.jsx';
 import { Input } from '../ui/Input.jsx';
 import { Button } from '../ui/Button.jsx';
 import { Badge } from '../ui/Badge.jsx';
-import { User, Mail, Briefcase, Building2, CreditCard } from 'lucide-react';
+import { User, Mail, Briefcase, Building2, CreditCard, Phone, MapPin } from 'lucide-react';
+import { updateMyProfile } from '../../api/funcionario.api.js';
 
 export function PersonalInfoCard({ profile, onUpdate }) {
-  // Función para formatear RUT
+  const [formData, setFormData] = useState({
+    nombres: '',
+    apellido_paterno: '',
+    apellido_materno: '',
+    email: '',
+    celular: '',
+    telefono: '',
+    direccion: '',
+  });
+  const [loading, setLoading] = useState(false);
+
   const formatRut = (rut) => {
     if (!rut) return '-';
     const cleaned = rut.replace(/\D/g, '');
@@ -17,7 +28,41 @@ export function PersonalInfoCard({ profile, onUpdate }) {
     return `${number.replace(/\B(?=(\d{3})+(?!\d))/g, '.')}-${dv}`;
   };
 
-  // Construir nombre completo
+  useEffect(() => {
+    setFormData({
+      nombres: profile?.nombres || '',
+      apellido_paterno: profile?.apellido_paterno || '',
+      apellido_materno: profile?.apellido_materno || '',
+      email: profile?.email || '',
+      celular: profile?.celular || '',
+      telefono: profile?.telefono || '',
+      direccion: profile?.direccion || '',
+    });
+  }, [profile]);
+
+  const handleChange = (field) => (event) => {
+    setFormData((current) => ({
+      ...current,
+      [field]: event.target.value,
+    }));
+  };
+
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      await updateMyProfile(formData);
+      if (typeof onUpdate === 'function') {
+        await onUpdate();
+      }
+      window.alert('Información actualizada correctamente');
+    } catch (error) {
+      console.error(error);
+      window.alert(error.message || 'No se pudo actualizar la información');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const fullName = profile 
     ? `${profile.nombres || ''} ${profile.apellido_paterno || ''} ${profile.apellido_materno || ''}`.trim()
     : '-';
@@ -81,15 +126,48 @@ export function PersonalInfoCard({ profile, onUpdate }) {
               <Badge className="bg-green-100 text-green-800 border-green-200">{estado}</Badge>
             </div>
           </div>
+
+          <div className={'flex flex-col gap-2'}>
+            <Label className="text-xs text-gray-600 flex items-center gap-2">
+              <Phone className="w-4 h-4"/>
+              Celular
+            </Label>
+            <Input value={formData.celular} onChange={handleChange('celular')} className="mt-2 border border-gray-200"/>
+          </div>
+
+          <div className={'flex flex-col gap-2'}>
+            <Label className="text-xs text-gray-600 flex items-center gap-2">
+              <Phone className="w-4 h-4"/>
+              Teléfono
+            </Label>
+            <Input value={formData.telefono} onChange={handleChange('telefono')} className="mt-2 border border-gray-200"/>
+          </div>
+
+          <div className={'flex flex-col gap-2'}>
+            <Label className="text-xs text-gray-600 flex items-center gap-2">
+              <Mail className="w-4 h-4"/>
+              Correo de contacto
+            </Label>
+            <Input value={formData.email} onChange={handleChange('email')} className="mt-2 border border-gray-200"/>
+          </div>
+
+          <div className="col-span-2 flex flex-col gap-2">
+            <Label className="text-xs text-gray-600 flex items-center gap-2">
+              <MapPin className="w-4 h-4"/>
+              Dirección
+            </Label>
+            <Input value={formData.direccion} onChange={handleChange('direccion')} className="mt-2 border border-gray-200"/>
+          </div>
         </div>
 
-          <div className="pt-4 border-t border-gray-200 flex flex-col gap-2">
-            <p className="text-sm text-gray-600 mb-3">
-              Si necesitas actualizar tu información personal, debes solicitar la actualización al departamento de
-              Recursos Humanos.
-            </p>
-            <Button className={'w-max'} variant="outline">Solicitar actualización de datos</Button>
-          </div>
+        <div className="pt-4 border-t border-gray-200 flex items-center justify-between gap-3">
+          <p className="text-sm text-gray-600">
+            Puedes actualizar tus datos de contacto directamente desde esta pantalla.
+          </p>
+          <Button className={'w-max'} onClick={handleSave} disabled={loading}>
+            {loading ? 'Guardando...' : 'Guardar cambios'}
+          </Button>
+        </div>
       </CardContent>
     </Card>
 );

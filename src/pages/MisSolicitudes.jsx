@@ -1,60 +1,10 @@
-import {useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {StatCard} from "../components/cards/StatCard.jsx";
 import {FilterBar} from "../components/requests/FilterBar.jsx";
 import {EmptyState} from "../components/requests/EmptyState.jsx";
 import {RequestsTable} from "../components/requests/RequestsTable.jsx";
-
-
-const MOCK_REQUEST = [
-    {
-        id: 'SOL-2024-1547',
-        date: '12/12/2024',
-        type: 'Uniforme completo',
-        description: 'Camisa, pantalón, zapatos - Talla M',
-        status: 'in-progress',
-        lastUpdate: '13/12/2024 - 14:30'
-    },
-    {
-        id: 'SOL-2024-1432',
-        date: '28/11/2024',
-        type: 'Reposición',
-        description: 'Pantalón de trabajo - Talla M',
-        status: 'approved',
-        lastUpdate: '05/12/2024 - 10:15'
-    },
-    {
-        id: 'SOL-2024-1389',
-        date: '15/11/2024',
-        type: 'Cambio de talla',
-        description: 'Camisa corporativa - De M a L',
-        status: 'pending',
-        lastUpdate: '15/11/2024 - 16:45'
-    },
-    {
-        id: 'SOL-2024-1201',
-        date: '03/10/2024',
-        type: 'Uniforme completo',
-        description: 'Kit completo de invierno - Talla M',
-        status: 'delivered',
-        lastUpdate: '25/10/2024 - 09:00'
-    },
-    {
-        id: 'SOL-2024-1089',
-        date: '18/09/2024',
-        type: 'Reposición',
-        description: 'Zapatos de seguridad - Talla 42',
-        status: 'delivered',
-        lastUpdate: '02/10/2024 - 11:30'
-    },
-    {
-        id: 'SOL-2024-0956',
-        date: '05/08/2024',
-        type: 'Cambio de prenda',
-        description: 'Chaqueta de invierno - Talla L',
-        status: 'rejected',
-        lastUpdate: '12/08/2024 - 15:20'
-    },
-];
+import { requestsApi } from "../api/requests.api.js";
+import { formatDate, parseDateDMY } from "../utils/date.js";
 
 function normalizeString(str) {
     if (!str) return '';
@@ -74,14 +24,15 @@ function normalizeString(str) {
 function getTypeKey(type) {
     const norm = normalizeString(type);
     if (norm.includes('uniforme')) return 'uniform';
-    if (norm.includes('repos') || norm.includes('reposición') || norm.includes('reposición')) return 'replacement';
+    if (norm.includes('repos')) return 'replacement';
     if (norm.includes('cambio') && norm.includes('talla')) return 'size-change';
     if (norm.includes('cambio') && norm.includes('prenda')) return 'garment-change';
     return 'all';
 }
 
 export default function MisSolicitudes(){
-    const [showEmpty] = useState(false);
+    const [requests, setRequests] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const [filters, setFilters] = useState({
         status: 'all',
@@ -89,19 +40,36 @@ export default function MisSolicitudes(){
         period: 'all'
     });
 
+    useEffect(() => {
+        loadRequests();
+    }, []);
+
+    async function loadRequests() {
+        try {
+            setLoading(true);
+            const data = await requestsApi.getAll();
+            setRequests(Array.isArray(data) ? data : []);
+        } catch (error) {
+            console.error('Error loading requests:', error);
+            setRequests([]);
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const handleFiltersChange = (newFilters) => {
         setFilters(newFilters);
     };
 
-    const filteredRequests = MOCK_REQUEST.filter((r) => {
-        if (filters.status && filters.status !== 'all' && r.status !== filters.status) return false;
+    const filteredRequests = useMemo(() => requests.filter((r) => {
+        if (filters.status && filters.status !== 'all' && r.estado !== filters.status) return false;
 
-        const typeKey = getTypeKey(r.type);
+        const typeKey = getTypeKey(r.tipo);
         if (filters.type && filters.type !== 'all' && typeKey !== filters.type) return false;
 
         if (filters.period && filters.period !== 'all') {
-            const [day, month, year] = r.date.split('/').map(Number);
-            const reqDate = new Date(year, month - 1, day);
+            const reqDate = parseDateDMY(r.fecha);
+            if (!reqDate) return false;
             const now = new Date();
 
             switch (filters.period) {
@@ -131,15 +99,17 @@ export default function MisSolicitudes(){
         }
 
         return true;
-    });
+    }), [filters, requests]);
 
-    const activeRequests = MOCK_REQUEST.filter(
-        r => r.status === 'pending' || r.status === 'approved' || r.status === 'in-progress'
+    const activeRequests = requests.filter(
+        r => r.estado === 'Pendiente' || r.estado === 'Aprobado' || r.estado === 'En proceso'
     ).length;
 
-    const nextDelivery = MOCK_REQUEST.find(r => r.status === 'approved' || r.status === 'in-progress');
+    const nextDelivery = requests.find(r => r.estado === 'Aprobado' || r.estado === 'En proceso');
 
-    const requireAction = MOCK_REQUEST.filter(r => r.status === 'pending').length;
+    const requireAction = requests.filter(r => r.estado === 'Pendiente').length;
+
+    const showEmpty = !loading && filteredRequests.length === 0;
 
     return (
       <main className={"min-[1400px]:w-[90%] min-[1400px]:mx-auto"}>
@@ -159,8 +129,8 @@ export default function MisSolicitudes(){
                   />
                   <StatCard
                       title="Próxima entrega"
-                      value={nextDelivery ? '20 Dic 2024' : '-'}
-                      description={nextDelivery?.description || 'No hay entregas programadas'}
+                      value={nextDelivery ? formatDate(nextDelivery.fecha) : '-'}
+                      description={nextDelivery?.items?.join(', ') || 'No hay entregas programadas'}
                       variant="highlight"
                   />
                   <StatCard
@@ -174,7 +144,11 @@ export default function MisSolicitudes(){
                   <FilterBar filters={filters} onChange={handleFiltersChange} />
               </div>
 
-              {showEmpty ? (
+              {loading ? (
+                  <div className="flex items-center justify-center py-12 text-sm text-gray-500">
+                      Cargando solicitudes...
+                  </div>
+              ) : showEmpty ? (
                   <EmptyState />
               ) : (
                   <RequestsTable requests={filteredRequests} />

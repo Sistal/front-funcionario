@@ -42,9 +42,9 @@ export default function MiCuenta(){
           ) : (
             <div className="space-y-6">
               <PersonalInfoCard profile={profile} onUpdate={loadProfile} />
-              <SecurityCard/>
-              <PreferencesCard/>
-              <ActivityHistoryCard/>
+              <SecurityCard profile={profile} />
+              <PreferencesCard profile={profile} onUpdate={loadProfile} />
+              <ActivityHistoryCard />
               <AccountActionsCard/>
             </div>
           )}

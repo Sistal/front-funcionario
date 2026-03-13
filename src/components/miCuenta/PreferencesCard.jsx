@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '../ui/Card.jsx';
+import React, { useEffect, useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card.jsx';
 import { Label } from '../ui/Label.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/Select.jsx';
 import { Checkbox } from '../ui/Checkbox.jsx';
@@ -7,12 +7,19 @@ import { Button } from '../ui/Button.jsx';
 import { Settings } from 'lucide-react';
 import { updatePreferences } from '../../api/funcionario.api.js';
 
-export function PreferencesCard() {
-  const [language, setLanguage] = useState('es');
+export function PreferencesCard({ profile, onUpdate }) {
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [systemNotifications, setSystemNotifications] = useState(true);
-  const [textSize, setTextSize] = useState('medium');
+  const [smsNotifications, setSmsNotifications] = useState(false);
+  const [theme, setTheme] = useState('light');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setEmailNotifications(Boolean(profile?.preferences?.notifications?.email));
+    setSystemNotifications(Boolean(profile?.preferences?.notifications?.push));
+    setSmsNotifications(Boolean(profile?.preferences?.notifications?.sms));
+    setTheme(profile?.preferences?.theme || 'light');
+  }, [profile]);
 
   const handleSave = async () => {
     try {
@@ -21,21 +28,27 @@ export function PreferencesCard() {
         notifications: {
           email: emailNotifications,
           push: systemNotifications,
-          sms: false
+          sms: smsNotifications,
         },
-        theme: "light",
+        theme,
       };
       const response = await updatePreferences(payload);
       
-      // Capturar la respuesta para actualizar el estado local
       if (response && response.notifications) {
         setEmailNotifications(response.notifications.email);
         setSystemNotifications(response.notifications.push);
+        setSmsNotifications(response.notifications.sms);
       }
-      alert('Preferencias guardadas exitosamente');
+      if (response && response.theme) {
+        setTheme(response.theme);
+      }
+      if (typeof onUpdate === 'function') {
+        await onUpdate();
+      }
+      window.alert('Preferencias guardadas exitosamente');
     } catch (e) {
       console.error(e);
-      alert('Error guardando preferencias');
+      window.alert(e.message || 'Error guardando preferencias');
     } finally {
       setLoading(false);
     }
@@ -50,23 +63,6 @@ export function PreferencesCard() {
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/*
-        ***************  PENDIENTE DE CONFIGURACIÓN (Se podría descartar) ****************
-        <div>
-          <Label htmlFor="language" className="text-sm text-gray-700 mb-2 block">Idioma de la interfaz</Label>
-          <Select value={language} onValueChange={setLanguage}>
-            <SelectTrigger id="language" className="w-full max-w-xs border border-gray-200">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="es">Español</SelectItem>
-              <SelectItem value="en">English</SelectItem>
-              <SelectItem value="pt">Português</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-        */}
-
         <div>
           <Label className="text-sm text-gray-700 mb-3 block">Preferencias de notificaciones</Label>
           <div className="space-y-3">
@@ -78,24 +74,27 @@ export function PreferencesCard() {
               <Checkbox id="system-notifications" checked={systemNotifications} onChange={setSystemNotifications} />
               <span className="cursor-pointer font-normal">Mostrar notificaciones dentro del sistema</span>
             </div>
+            <div className="flex items-center gap-3">
+              <Checkbox id="sms-notifications" checked={smsNotifications} onChange={setSmsNotifications} />
+              <span className="cursor-pointer font-normal">Recibir alertas por SMS</span>
+            </div>
           </div>
           <p className="text-xs text-gray-500 mt-3">Las notificaciones te mantendrán informado sobre el estado de tus solicitudes y despachos</p>
         </div>
 
         <div>
-          <Label htmlFor="text-size" className="text-sm text-gray-700 mb-2 block">Tamaño de texto (Accesibilidad)</Label>
-          <Select value={textSize} onValueChange={setTextSize}>
-            <SelectTrigger id="text-size" className="w-full max-w-xs border border-gray-200">
+          <Label htmlFor="theme" className="text-sm text-gray-700 mb-2 block">Tema de la aplicación</Label>
+          <Select value={theme} onValueChange={setTheme}>
+            <SelectTrigger id="theme" className="w-full max-w-xs border border-gray-200">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="small">Pequeño</SelectItem>
-              <SelectItem value="medium">Mediano (Predeterminado)</SelectItem>
-              <SelectItem value="large">Grande</SelectItem>
-              <SelectItem value="extra-large">Muy grande</SelectItem>
+              <SelectItem value="light">Claro</SelectItem>
+              <SelectItem value="dark">Oscuro</SelectItem>
+              <SelectItem value="system">Sistema</SelectItem>
             </SelectContent>
           </Select>
-          <p className="text-xs text-gray-500 mt-2">Ajusta el tamaño del texto para mejorar la legibilidad</p>
+          <p className="text-xs text-gray-500 mt-2">Se sincroniza con las preferencias disponibles del funcionario en el BFF</p>
         </div>
         <div className="pt-4 mt-6">
           <Button onClick={handleSave} disabled={loading}>

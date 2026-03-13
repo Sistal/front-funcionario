@@ -130,7 +130,7 @@ export function getUpcomingDeliveries() {
  * Obtener próximas entregas del dashboard
  */
 export function getMyEntregas() {
-  return http.get('/api/v1/entregas');
+  return http.get('/entregas');
 }
 
 // ==================== CAMBIO DE SUCURSAL ====================

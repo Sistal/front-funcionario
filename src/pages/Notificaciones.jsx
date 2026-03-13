@@ -50,11 +50,10 @@ export function Notificaciones() {
   const toggleRead = async (id) => {
     try {
       await notificationsApi.markAsRead(id);
-      setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: !n.isRead } : n));
+      setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
     } catch (error) {
       console.error('Error marking notification as read:', error);
-      // Actualizar optimísticamente de todos modos
-      setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: !n.isRead } : n));
+      setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
     }
   };
 

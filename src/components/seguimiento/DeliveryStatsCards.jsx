@@ -2,7 +2,7 @@ import React from 'react';
 import { Truck, Calendar, CheckCircle } from 'lucide-react';
 import deliveriesData from '../../data/deliveries.json';
 import { StatCard } from '../cards/StatCard.jsx';
-import { parseDateDMY } from '../../utils/date.js';
+import { formatDate, parseDateDMY } from '../../utils/date.js';
 
 export function DeliveryStatsCards({ deliveries = deliveriesData }) {
   const inTransit = deliveries.filter((d) => d.status === 'in-transit').length;
@@ -27,7 +27,7 @@ export function DeliveryStatsCards({ deliveries = deliveriesData }) {
 
       <StatCard
         title="Próxima entrega"
-        value={next ? next.dispatchDate : '-'}
+        value={next ? formatDate(next.dispatchDate) : '-'}
         description={next ? next.garments : 'N/A'}
         variant="highlight"
         icon={<Calendar className="w-5 h-5 text-blue-600" />}

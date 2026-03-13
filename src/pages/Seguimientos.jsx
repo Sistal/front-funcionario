@@ -5,6 +5,7 @@ import { DeliveryStatsCards } from '../components/seguimiento/DeliveryStatsCards
 import { DeliveryFilters } from '../components/seguimiento/DeliveryFilters.jsx';
 import { DeliveriesTable } from '../components/seguimiento/DeliveriesTable.jsx';
 import { DeliveryDetailModal } from '../components/seguimiento/DeliveryDetailModal.jsx';
+import { deliveriesApi } from '../api/deliveries.api';
 import { getMyEntregas } from '../api/funcionario.api';
 
 export default function Seguimientos() {
@@ -35,9 +36,19 @@ export default function Seguimientos() {
     }
 
     const handleViewDetail = (delivery) => {
-        setSelectedDelivery(delivery);
         setModalOpen(true);
+        loadDeliveryDetail(delivery);
     };
+
+    async function loadDeliveryDetail(delivery) {
+        try {
+            const detail = await deliveriesApi.getById(delivery.id || delivery.requestId);
+            setSelectedDelivery(detail);
+        } catch (error) {
+            console.error('Error loading delivery detail:', error);
+            setSelectedDelivery(delivery);
+        }
+    }
 
     const filteredDeliveries = useMemo(() => {
         const now = new Date();

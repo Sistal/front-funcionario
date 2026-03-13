@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card.jsx';
 import { Label } from '../ui/Label.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/Select.jsx';
+import { Input } from '../ui/Input.jsx';
 import { Textarea } from '../ui/Textarea.jsx';
 
 const changeReasons = [
@@ -11,9 +12,7 @@ const changeReasons = [
 	{ value: 'other', label: 'Otro' },
 ];
 
-export function BranchChangeReasonCard() {
-	const [reason, setReason] = useState('');
-	const [description, setDescription] = useState('');
+export function BranchChangeReasonCard({ reason, description, effectiveDate, onReasonChange, onDescriptionChange, onEffectiveDateChange }) {
 
 	return (
 		<Card>
@@ -23,7 +22,7 @@ export function BranchChangeReasonCard() {
           <CardContent className="space-y-4">
             <div className={'flex flex-col gap-2'}>
               <Label htmlFor="change-reason">Motivo del cambio</Label>
-              <Select value={reason} onValueChange={setReason}>
+              <Select value={reason} onValueChange={onReasonChange}>
                 <SelectTrigger id="change-reason" className="mt-2 border border-gray-200">
                   <SelectValue placeholder="Seleccione el motivo del cambio"/>
                 </SelectTrigger>
@@ -38,12 +37,23 @@ export function BranchChangeReasonCard() {
             </div>
 
             <div className={'flex flex-col gap-2'}>
+              <Label htmlFor="effective-date">Fecha efectiva</Label>
+              <Input
+                  id="effective-date"
+                  type="date"
+                  value={effectiveDate}
+                  onChange={(e) => onEffectiveDateChange(e.target.value)}
+                  className="mt-2 border border-gray-200"
+              />
+            </div>
+
+            <div className={'flex flex-col gap-2'}>
               <Label htmlFor="description">Descripción del motivo</Label>
               <Textarea
                   id="description"
                   placeholder="Describe brevemente el motivo del cambio de sucursal"
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                    onChange={(e) => onDescriptionChange(e.target.value)}
                   className="mt-2 min-h-24 border border-gray-200"
               />
               <p className="text-xs text-gray-500 mt-2">

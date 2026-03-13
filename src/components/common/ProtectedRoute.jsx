@@ -3,8 +3,8 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { ENV } from '../../config/env';
 
-export default function ProtectedRoute({ children }) {
-  const { isAuthenticated, loading } = useAuth();
+export default function ProtectedRoute({ children, allowWithoutFuncionario = false }) {
+  const { isAuthenticated, loading, needsFuncionarioRegistration } = useAuth();
 
   if (loading) {
     return (
@@ -21,6 +21,14 @@ export default function ProtectedRoute({ children }) {
     // Redirigir al login
     window.location.href = ENV.LOGIN_URL;
     return null;
+  }
+
+  if (needsFuncionarioRegistration && !allowWithoutFuncionario) {
+    return <Navigate to="/registro-funcionario" replace />;
+  }
+
+  if (!needsFuncionarioRegistration && allowWithoutFuncionario) {
+    return <Navigate to="/" replace />;
   }
 
   return children;

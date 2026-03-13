@@ -1,8 +1,11 @@
 import { Button } from '../ui/Button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/Select.jsx';
 import { Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export function FilterBar({ filters = {}, onChange }) {
+    const navigate = useNavigate();
+
     const handleChange = (key) => (value) => {
         if (typeof onChange === 'function') {
             onChange({ ...filters, [key]: value });
@@ -18,11 +21,11 @@ export function FilterBar({ filters = {}, onChange }) {
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value="all">Todos los estados</SelectItem>
-                        <SelectItem value="pending">Pendiente</SelectItem>
-                        <SelectItem value="approved">Aprobado</SelectItem>
-                        <SelectItem value="in-progress">En proceso</SelectItem>
-                        <SelectItem value="delivered">Entregado</SelectItem>
-                        <SelectItem value="rejected">Rechazado</SelectItem>
+                        <SelectItem value="Pendiente">Pendiente</SelectItem>
+                        <SelectItem value="Aprobado">Aprobado</SelectItem>
+                        <SelectItem value="En proceso">En proceso</SelectItem>
+                        <SelectItem value="Entregado">Entregado</SelectItem>
+                        <SelectItem value="Rechazado">Rechazado</SelectItem>
                     </SelectContent>
                 </Select>
 
@@ -53,7 +56,7 @@ export function FilterBar({ filters = {}, onChange }) {
                 </Select>
             </div>
 
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold" onClick={() => navigate('/cambio')}>
                 <Plus className="w-4 h-4 mr-2" />
                 Nueva solicitud
             </Button>

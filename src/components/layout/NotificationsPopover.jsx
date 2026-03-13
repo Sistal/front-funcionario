@@ -1,80 +1,42 @@
-import React, { useState } from 'react';
-import { Bell, Clock, Package, AlertCircle, CheckCircle, XCircle, ChevronRight } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Bell, Clock, Package, AlertCircle, CheckCircle, ChevronRight } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/Popover.jsx';
 import { Button } from '../ui/Button.jsx';
 import { ScrollArea } from '../ui/ScrollArea.jsx';
 import { Separator } from '../ui/Separator.jsx';
 import { useNavigate } from 'react-router-dom';
-
-const mockNotifications = [
-	{
-		id: '1',
-		type: 'approved',
-		title: 'Solicitud aprobada',
-		message:
-			'Tu solicitud #2024-0847 ha sido aprobada y está en proceso de preparación.',
-		timestamp: 'Hace 5 minutos',
-		isRead: false,
-	},
-	{
-		id: '2',
-		type: 'delivery',
-		title: 'Entrega programada',
-		message: 'Tu pedido será entregado el 20 de diciembre en la Sucursal Centro.',
-		timestamp: 'Hace 1 hora',
-		isRead: false,
-	},
-	{
-		id: '3',
-		type: 'alert',
-		title: 'Documentación pendiente',
-		message:
-			'Debes completar la documentación para tu solicitud de cambio de talla.',
-		timestamp: 'Hace 3 horas',
-		isRead: false,
-	},
-	{
-		id: '4',
-		type: 'update',
-		title: 'Entrega confirmada',
-		message:
-			'Has recibido correctamente tu pedido #2024-0832. Gracias por confirmar.',
-		timestamp: 'Hace 1 día',
-		isRead: true,
-	},
-	{
-		id: '5',
-		type: 'update',
-		title: 'Nueva temporada disponible',
-		message: 'Ya puedes solicitar uniformes de la temporada Verano 2025.',
-		timestamp: 'Hace 2 días',
-		isRead: true,
-	},
-	{
-		id: '6',
-		type: 'alert',
-		title: 'Solicitud rechazada',
-		message:
-			'Tu solicitud #2024-0820 fue rechazada. Revisa los comentarios del supervisor.',
-		timestamp: 'Hace 3 días',
-		isRead: true,
-	},
-];
+import { notificationsApi } from '../../api/notifications.api.js';
+import { formatDateTime } from '../../utils/date.js';
 
 export function NotificationsPopover() {
-	const [notifications, setNotifications] = useState(mockNotifications);
+	const [notifications, setNotifications] = useState([]);
 	const [open, setOpen] = useState(false);
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (open) {
+			loadNotifications();
+		}
+	}, [open]);
+
+	async function loadNotifications() {
+		try {
+			const data = await notificationsApi.getAll();
+			setNotifications(Array.isArray(data) ? data : []);
+		} catch (error) {
+			console.error('Error loading notifications:', error);
+		}
+	}
 
 	const unreadCount = notifications.filter((n) => !n.isRead).length;
 
 	const markAsRead = (id) => {
-		setNotifications((prev) =>
-			prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
-		);
+		notificationsApi.markAsRead(id).catch((error) => console.error(error));
+		setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)));
 	};
 
 	const markAllAsRead = () => {
+		notificationsApi.markAllAsRead().catch((error) => console.error(error));
 		setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
 	};
 
@@ -141,7 +103,7 @@ export function NotificationsPopover() {
 								<Button
 									variant="ghost"
 									size="sm"
-									className="!text-xs text-blue-600 hover:text-blue-700 h-auto py-1"
+									className="text-xs text-blue-600 hover:text-blue-700 h-auto py-1"
 									onClick={markAllAsRead}
 								>
 									Marcar todas como leídas
@@ -177,7 +139,7 @@ export function NotificationsPopover() {
 												<div
 													className={`w-10 h-10 rounded-lg ${getIconBgColor(
 														notification.type
-													)} flex items-center justify-center flex-shrink-0`}
+													)} flex items-center justify-center shrink-0`}
 												>
 													{getIcon(notification.type)}
 												</div>
@@ -189,7 +151,7 @@ export function NotificationsPopover() {
 															{notification.title}
 														</h5>
 														{!notification.isRead && (
-															<div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-1.5" />
+															<div className="w-2 h-2 bg-blue-600 rounded-full mt-1.5" />
 														)}
 													</div>
 													<p className="text-xs text-gray-600 mb-2 leading-relaxed">
@@ -197,7 +159,7 @@ export function NotificationsPopover() {
 													</p>
 													<div className="flex items-center gap-1.5 text-xs text-gray-500">
 														<Clock className="w-3 h-3" />{' '}
-														<span>{notification.timestamp}</span>
+														<span>{formatDateTime(notification.timestamp)}</span>
 													</div>
 												</div>
 											</div>
@@ -216,7 +178,7 @@ export function NotificationsPopover() {
 							<div className="px-4 py-3">
 								<Button
 									variant="ghost"
-									className="w-full justify-between !text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+									className="w-full justify-between text-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50"
 									onClick={() => {
 										setOpen(false);
 										navigate('/notificaciones');

@@ -10,12 +10,19 @@ import Seguimientos from "./pages/Seguimientos";
 import Sucursal from "./pages/Sucursal";
 import MiCuenta from "./pages/MiCuenta";
 import Notificaciones from "./pages/Notificaciones";
+import RegistroFuncionario from './pages/RegistroFuncionario';
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          <Route path="/registro-funcionario" element={
+            <ProtectedRoute allowWithoutFuncionario>
+              <RegistroFuncionario />
+            </ProtectedRoute>
+          } />
+
           <Route path="/" element={
             <ProtectedRoute>
               <Layout />

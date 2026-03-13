@@ -7,6 +7,7 @@ import SizesCard from "../components/cards/SizesCard";
 import StatusCard from "../components/cards/StatusCard";
 import { getRecentRequests, getUpcomingDeliveries, getMyMedidas } from "../api/funcionario.api";
 import staticData from "../data/home.json";
+import { formatDate } from "../utils/date.js";
 
 export default function HomeLayout({ dashboardData, profile }) {
   const [recentRequests, setRecentRequests] = useState([]);
@@ -30,10 +31,9 @@ export default function HomeLayout({ dashboardData, profile }) {
         setRecentRequests(requests);
         setUpcomingDeliveries(deliveries);
 
-        // Cargar medidas si el perfil tiene id_medidas y id_funcionario
-        if (profile?.id_funcionario && profile?.id_medidas) {
+        if (profile?.id) {
           try {
-            const medidasData = await getMyMedidas(profile.id_funcionario);
+            const medidasData = await getMyMedidas(profile.id);
             setMedidas(medidasData);
           } catch (error) {
             console.warn('No se pudieron cargar las medidas:', error);
@@ -56,7 +56,7 @@ export default function HomeLayout({ dashboardData, profile }) {
   // Obtener nombre del perfil o usar valor por defecto
   const userName = profile?.nombres && profile?.apellido_paterno 
     ? `${profile.nombres} ${profile.apellido_paterno}`
-    : "Usuario";
+    : profile?.nombre_completo || "Usuario";
 
   // Construir datos de tallas desde las medidas cargadas
   const sizesData = medidas ? {
@@ -80,10 +80,21 @@ export default function HomeLayout({ dashboardData, profile }) {
   const statusCounts = dashboardData ? {
     total: dashboardData.total_solicitudes || 0,
     entregados: dashboardData.entregas_entregadas || 0,
-    enProceso: dashboardData.entregas_en_proceso || 0,
+    enProceso: dashboardData.entregas_proximas || dashboardData.entregas_en_proceso || 0,
     pendientes: dashboardData.solicitudes_pendientes || 0,
     requierenAccion: dashboardData.solicitudes_requieren_accion || 0
   } : staticData.statusCounts;
+
+  const recentRequestItems = recentRequests.map((request) => ({
+    date: formatDate(request.fecha || request.date),
+    status: request.estado || request.status,
+    description: Array.isArray(request.items) ? request.items.join(', ') : request.description || request.tipo,
+  }));
+
+  const upcomingDeliveryItems = upcomingDeliveries.map((delivery) => ({
+    title: delivery.garments || delivery.title,
+    date: formatDate(delivery.dispatchDate || delivery.date),
+  }));
 
   return (
     <div className="content-stretch flex flex-col gap-8 w-full">
@@ -102,11 +113,11 @@ export default function HomeLayout({ dashboardData, profile }) {
       ) : (
         <>
           <div className="w-full">
-            <RecentRequests requests={recentRequests} />
+            <RecentRequests requests={recentRequestItems} />
           </div>
 
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-            <UpcomingDeliveries items={upcomingDeliveries} svgPaths={staticData.svgPaths} />
+            <UpcomingDeliveries items={upcomingDeliveryItems} svgPaths={staticData.svgPaths} />
             <Shortcuts items={staticData.shortcuts} svgPaths={staticData.svgPaths} />
           </div>
 

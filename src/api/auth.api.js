@@ -9,9 +9,13 @@ export function getMe() {
   return http.get('/api/v1/auth/me');
 }
 
+export function changePassword(data) {
+  return http.put('/api/v1/auth/change-password', data);
+}
+
 export async function logout() {
   try {
-    await http.post('/api/v1/auth/logouta');
+    await http.post('/api/v1/auth/logout');
   } catch (err) {
     console.error('Logout error:', err);
   }
@@ -20,6 +24,6 @@ export async function logout() {
   localStorage.removeItem('auth_user');
   
   // Redirigir al login
-  //window.location.href = ENV.LOGIN_URL;
+  window.location.href = ENV.LOGIN_URL;
 }
 

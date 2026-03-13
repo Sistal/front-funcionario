@@ -1,8 +1,9 @@
+import { formatDate } from '../../utils/date.js';
 import {LucideBox} from "lucide-react";
 
 export default function UpcomingDeliveries({items}) {
   return (
-    <div className="bg-white rounded-[14px] shadow p-6 flex flex-col gap-[28px] py-10">
+    <div className="bg-white rounded-[14px] shadow p-6 flex flex-col gap-7 py-10">
       <h3 className="text-[18px] mb-4">Próximas entregas</h3>
       <div className="flex flex-col gap-4">
         {items.map((it, idx) => (
@@ -12,7 +13,7 @@ export default function UpcomingDeliveries({items}) {
             </div>
             <div className="flex-1">
               <div className="text-sm text-gray-800">{it.title}</div>
-              <div className="text-xs text-gray-500">{it.date}</div>
+              <div className="text-xs text-gray-500">{formatDate(it.date, { month: 'long' })}</div>
             </div>
           </div>
         ))}

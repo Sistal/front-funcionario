@@ -2,47 +2,24 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card.jsx';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/Table.jsx';
 import { Badge } from '../ui/Badge.jsx';
-
-const historyData = [
-	{
-		requestDate: '15/03/2024',
-		previousBranch: 'Sucursal Las Condes',
-		newBranch: 'Sucursal Santiago Centro',
-		status: 'approved',
-		resolutionDate: '18/03/2024',
-	},
-	{
-		requestDate: '10/11/2023',
-		previousBranch: 'Sucursal Providencia',
-		newBranch: 'Sucursal Las Condes',
-		status: 'approved',
-		resolutionDate: '15/11/2023',
-	},
-	{
-		requestDate: '22/08/2023',
-		previousBranch: 'Sucursal Maipú',
-		newBranch: 'Sucursal Providencia',
-		status: 'rejected',
-		resolutionDate: '25/08/2023',
-	},
-];
+import { formatDate } from '../../utils/date.js';
 
 const statusConfig = {
-	pending: {
+	Pendiente: {
 		label: 'Pendiente',
 		className: 'bg-yellow-100 text-yellow-800 border-yellow-200',
 	},
-	approved: {
+	Aprobado: {
 		label: 'Aprobado',
 		className: 'bg-green-100 text-green-800 border-green-200',
 	},
-	rejected: {
+	Rechazado: {
 		label: 'Rechazado',
 		className: 'bg-red-100 text-red-800 border-red-200',
 	},
 };
 
-export function BranchChangeHistoryTable() {
+export function BranchChangeHistoryTable({ history = [], loading = false }) {
 	return (
 		<Card>
 			<CardHeader>
@@ -51,6 +28,9 @@ export function BranchChangeHistoryTable() {
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
+				{loading ? (
+					<div className="flex items-center justify-center py-10 text-sm text-gray-500">Cargando historial...</div>
+				) : (
 				<div className="border border-gray-200 rounded-lg overflow-hidden">
 					<Table>
 						<TableHeader>
@@ -73,37 +53,38 @@ export function BranchChangeHistoryTable() {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{historyData.map((record, index) => (
+							{history.map((record, index) => (
 								<TableRow key={index} className="hover:bg-gray-50 border border-gray-200">
 									<TableCell className="text-gray-600">
-										{record.requestDate}
+										{formatDate(record.fechaSolicitud)}
 									</TableCell>
 									<TableCell className="text-gray-900">
-										{record.previousBranch}
+										{record.sucursalAnterior}
 									</TableCell>
 									<TableCell className="text-gray-900">
-										{record.newBranch}
+										{record.sucursalNueva}
 									</TableCell>
 									<TableCell>
 										<Badge
 											variant="outline"
 											className={
-												statusConfig[record.status].className
+												statusConfig[record.estado]?.className
 											}
 										>
 											{
-												statusConfig[record.status].label
+												statusConfig[record.estado]?.label || record.estado
 											}
 										</Badge>
 									</TableCell>
 									<TableCell className="text-gray-600">
-										{record.resolutionDate}
+										{formatDate(record.fechaEfectiva)}
 									</TableCell>
 								</TableRow>
 							))}
 						</TableBody>
 					</Table>
 				</div>
+				)}
 			</CardContent>
 		</Card>
 	);

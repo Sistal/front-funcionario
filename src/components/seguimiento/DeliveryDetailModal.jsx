@@ -1,3 +1,4 @@
+import { formatDate } from '../../utils/date.js';
 import React from 'react';
 
 export function DeliveryDetailModal({ delivery, open = false, onClose = () => {} }) {
@@ -12,12 +13,25 @@ export function DeliveryDetailModal({ delivery, open = false, onClose = () => {}
           <button onClick={onClose} className="text-gray-500">Cerrar</button>
         </div>
         <div className="mt-4 space-y-2 text-sm text-gray-700">
-          <p><strong>Fecha despacho:</strong> {delivery.dispatchDate}</p>
+          <p><strong>Fecha despacho:</strong> {formatDate(delivery.dispatchDate)}</p>
           <p><strong>Prendas:</strong> {delivery.garments}</p>
           <p><strong>Dirección:</strong> {delivery.address}</p>
           <p><strong>Estado:</strong> {delivery.status}</p>
           <p><strong>Código rastreo:</strong> {delivery.trackingCode}</p>
         </div>
+        {Array.isArray(delivery.timeline) && delivery.timeline.length > 0 && (
+          <div className="mt-6 space-y-3">
+            <h4 className="text-sm font-medium text-gray-900">Historial</h4>
+            <div className="space-y-2">
+              {delivery.timeline.map((step, index) => (
+                <div key={`${step.status}-${index}`} className="flex items-start justify-between rounded-lg border border-gray-200 px-3 py-2">
+                  <span className="text-sm text-gray-900">{step.status}</span>
+                  <span className="text-xs text-gray-500">{formatDate(step.date)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

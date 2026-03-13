@@ -1,23 +1,36 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card.jsx';
 import { Upload, X, FileText, Image as ImageIcon } from 'lucide-react';
+import { requestsApi } from '../../api/requests.api.js';
 
-export function EvidenceUploadCard() {
-  const [files, setFiles] = useState([]);
+export function EvidenceUploadCard({ files = [], onFilesChange }) {
+  const [uploading, setUploading] = useState(false);
 
-  const handleFileUpload = (e) => {
+  const handleFileUpload = async (e) => {
     if (e.target.files) {
-      const newFiles = Array.from(e.target.files).map((file) => ({
-        id: Math.random().toString(36).substr(2, 9),
-        name: file.name,
-        type: file.type.startsWith('image/') ? 'image' : 'document',
-        size: `${(file.size / 1024).toFixed(1)} KB`,
-      }));
-      setFiles([...files, ...newFiles]);
+      try {
+        setUploading(true);
+        const uploaded = await Promise.all(Array.from(e.target.files).map(async (file) => {
+          const response = await requestsApi.uploadEvidence(file);
+          return {
+            id: response.fileId,
+            name: response.name,
+            type: file.type.startsWith('image/') ? 'image' : 'document',
+            size: `${(file.size / 1024).toFixed(1)} KB`,
+          };
+        }));
+        onFilesChange([...(files || []), ...uploaded]);
+      } catch (error) {
+        console.error(error);
+        window.alert(error.message || 'No se pudo subir el archivo');
+      } finally {
+        setUploading(false);
+        e.target.value = '';
+      }
     }
   };
 
-  const removeFile = (id) => setFiles(files.filter((f) => f.id !== id));
+  const removeFile = (id) => onFilesChange(files.filter((f) => f.id !== id));
 
   return (
     <Card>
@@ -34,7 +47,7 @@ export function EvidenceUploadCard() {
                 <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
                   <Upload className="w-6 h-6 text-gray-400" />
                 </div>
-                <p className="text-sm text-gray-700 mb-1">Haga clic para cargar archivos o arrastre aquí</p>
+                <p className="text-sm text-gray-700 mb-1">{uploading ? 'Subiendo archivos...' : 'Haga clic para cargar archivos o arrastre aquí'}</p>
                 <p className="text-xs text-gray-500">PNG, JPG, PDF hasta 10MB</p>
               </div>
             </label>

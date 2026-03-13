@@ -37,20 +37,20 @@ export default function Header() {
   }
 
   const getInitials = (profile) => {
-    if (!profile) return user?.email?.substring(0, 2).toUpperCase() || 'US';
+    if (!profile) return user?.nombre_usuario?.substring(0, 2).toUpperCase() || 'US';
     const nombres = profile.nombres || '';
     const apellido = profile.apellido_paterno || '';
     if (nombres && apellido) {
       return `${nombres[0]}${apellido[0]}`.toUpperCase();
     }
-    return user?.email?.substring(0, 2).toUpperCase() || 'US';
+    return user?.nombre_usuario?.substring(0, 2).toUpperCase() || 'US';
   };
 
   const getUserName = () => {
     if (profile?.nombres && profile?.apellido_paterno) {
       return `${profile.nombres} ${profile.apellido_paterno}`;
     }
-    return user?.email || 'Usuario';
+    return user?.nombre_completo || user?.nombre_usuario || 'Usuario';
   };
 
   return (

@@ -1,3 +1,4 @@
+import { formatDate } from '../../utils/date.js';
 import React from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/Table.jsx';
 import { Badge } from '../ui/Badge.jsx';
@@ -27,9 +28,9 @@ export function DeliveriesTable({ deliveries = [], onViewDetail = () => {} }) {
         </TableHeader>
         <TableBody>
           {deliveries.map((delivery) => (
-            <TableRow key={delivery.requestId} className="hover:bg-gray-50 border border-gray-200">
+            <TableRow key={delivery.id || delivery.requestId} className="hover:bg-gray-50 border border-gray-200">
               <TableCell className="font-medium text-gray-900">{delivery.requestId}</TableCell>
-              <TableCell className="text-gray-600">{delivery.dispatchDate}</TableCell>
+              <TableCell className="text-gray-600">{formatDate(delivery.dispatchDate)}</TableCell>
               <TableCell className="text-gray-600">{delivery.garments}</TableCell>
               <TableCell>
                 <div className="flex items-start gap-2">

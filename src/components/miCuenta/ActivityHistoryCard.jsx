@@ -1,52 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card.jsx';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/Table.jsx';
 import { Clock, Monitor, Smartphone, Globe } from 'lucide-react';
-
-const activityData = [
-	{
-		date: '14/12/2024',
-		time: '14:32',
-		action: 'Inicio de sesión exitoso',
-		origin: 'Santiago, Chile',
-		device: 'desktop',
-	},
-	{
-		date: '13/12/2024',
-		time: '09:15',
-		action: 'Solicitud de cambio de talla enviada',
-		origin: 'Santiago, Chile',
-		device: 'web',
-	},
-	{
-		date: '12/12/2024',
-		time: '16:45',
-		action: 'Inicio de sesión exitoso',
-		origin: 'Santiago, Chile',
-		device: 'mobile',
-	},
-	{
-		date: '10/12/2024',
-		time: '11:20',
-		action: 'Cambio de contraseña exitoso',
-		origin: 'Santiago, Chile',
-		device: 'desktop',
-	},
-	{
-		date: '08/12/2024',
-		time: '10:05',
-		action: 'Inicio de sesión exitoso',
-		origin: 'Santiago, Chile',
-		device: 'desktop',
-	},
-	{
-		date: '05/12/2024',
-		time: '15:30',
-		action: 'Solicitud de uniforme enviada',
-		origin: 'Santiago, Chile',
-		device: 'web',
-	},
-];
+import { getActivity } from '../../api/funcionario.api.js';
+import { formatDateTime } from '../../utils/date.js';
 
 const getDeviceIcon = (device) => {
 	switch (device) {
@@ -60,6 +17,26 @@ const getDeviceIcon = (device) => {
 };
 
 export function ActivityHistoryCard() {
+	const [activityData, setActivityData] = useState([]);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		loadActivity();
+	}, []);
+
+	async function loadActivity() {
+		try {
+			setLoading(true);
+			const data = await getActivity();
+			setActivityData(Array.isArray(data) ? data : []);
+		} catch (error) {
+			console.error('Error loading activity:', error);
+			setActivityData([]);
+		} finally {
+			setLoading(false);
+		}
+	}
+
 	return (
 		<Card>
 			<CardHeader>
@@ -71,6 +48,11 @@ export function ActivityHistoryCard() {
 				</div>
 			</CardHeader>
 			<CardContent>
+				{loading ? (
+					<div className="flex items-center justify-center py-10 text-sm text-gray-500">
+						Cargando actividad...
+					</div>
+				) : (
 				<div className="border border-gray-200 rounded-lg overflow-hidden mb-3">
 					<Table>
 						<TableHeader>
@@ -90,16 +72,16 @@ export function ActivityHistoryCard() {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{activityData.map((record, index) => (
+							{activityData.map((record) => (
 								<TableRow key={index} className="hover:bg-gray-50 border border-gray-200">
 									<TableCell className="text-gray-600">
-										{record.date} - {record.time}
+										{formatDateTime(record.date)}
 									</TableCell>
 									<TableCell className="text-gray-900">
 										{record.action}
 									</TableCell>
 									<TableCell className="text-gray-600">
-										{record.origin}
+										{record.ip || '-'}
 									</TableCell>
 									<TableCell>
 										<div className="flex items-center gap-2">
@@ -109,7 +91,9 @@ export function ActivityHistoryCard() {
 													? 'Navegador'
 													: record.device === 'desktop'
 													? 'Escritorio'
-													: 'Móvil'}
+													: record.device?.toLowerCase().includes('iphone') || record.device?.toLowerCase().includes('android')
+													? 'Móvil'
+													: record.device || 'Navegador'}
 											</span>
 										</div>
 									</TableCell>
@@ -118,6 +102,7 @@ export function ActivityHistoryCard() {
 						</TableBody>
 					</Table>
 				</div>
+				)}
 				<p className="text-xs text-gray-500">
 					Este historial es solo informativo y no editable. Si detectas
 					actividad sospechosa, contacta inmediatamente al administrador del

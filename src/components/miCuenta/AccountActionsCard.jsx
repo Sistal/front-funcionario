@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card.jsx';
 import { Button } from '../ui/Button.jsx';
 import { LogOut, AlertTriangle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { ENV } from '../../config/env';
 
 export function AccountActionsCard() {
   const { logout } = useAuth();
@@ -11,8 +10,6 @@ export function AccountActionsCard() {
   const handleLogout = () => {
     if (confirm('¿Estás seguro que deseas cerrar sesión?')) {
       logout();
-      // Redirigir al frontend de login
-      window.location.href = ENV.LOGIN_URL || 'http://localhost:5173';
     }
   };
 
@@ -23,7 +20,7 @@ export function AccountActionsCard() {
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex gap-3 p-4 bg-amber-50 rounded-lg border border-amber-200">
-          <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+          <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
           <div>
             <p className="text-sm text-amber-900 font-medium mb-1">Seguridad recomendada</p>
             <p className="text-sm text-amber-700">Si compartes tu equipo con otras personas, asegúrate de cerrar sesión al finalizar tu trabajo para proteger tu información personal.</p>
