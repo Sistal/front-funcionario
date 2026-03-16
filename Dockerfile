@@ -40,11 +40,11 @@ RUN chmod +x /docker-entrypoint.sh
 RUN touch /usr/share/nginx/html/env-config.js
 
 # Exponer puerto
-EXPOSE 5174
+EXPOSE 3000
 
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:5174/ || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
 
 # Usar el script de entrypoint para inyectar variables y arrancar nginx
 ENTRYPOINT ["/docker-entrypoint.sh"]
