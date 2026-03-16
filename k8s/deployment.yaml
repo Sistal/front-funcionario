@@ -7,7 +7,7 @@ metadata:
     app: front-funcionario
     tier: frontend
 spec:
-  replicas: 2 # Alta disponibilidad
+  replicas: 1 # Alta disponibilidad
   selector:
     matchLabels:
       app: front-funcionario
@@ -19,7 +19,7 @@ spec:
       containers:
       - name: front-funcionario
         # La imagen se reemplazará en el pipeline CI/CD gracias a IMAGE_PLACEHOLDER
-        image: us-east1-docker.pkg.dev/sistal-490016/sistal-docker-images/front-funcionario:IMAGE_PLACEHOLDER
+        image: us-central1-docker.pkg.dev/sistal-490016/sistal-docker-images/front-funcionario:IMAGE_PLACEHOLDER
         imagePullPolicy: Always
         ports:
         - containerPort: 3000 # NGINX dentro del contenedor expone el puerto 80 por defecto
