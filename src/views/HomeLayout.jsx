@@ -101,7 +101,7 @@ export default function HomeLayout({ dashboardData, profile }) {
       <div className="flex flex-col items-baseline justify-between gap-[32px]">
         <Tabs items={["Resumen", "Historial", "Tallas"]} />
         <div className="flex flex-col gap-[8px]">
-          <h2 className={'font-bold'}>Bienvenido, {userName}</h2>
+          <h2 className={'font-bold'}>Bienvenido</h2>
           <p className="text-sm text-gray-500">Aquí tienes un resumen de tus solicitudes y próximas entregas</p>
         </div>
       </div>

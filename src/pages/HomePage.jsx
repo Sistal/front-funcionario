@@ -6,7 +6,7 @@ import { getDashboardStats, getMyProfile } from "../api/funcionario.api";
 const defaultHeroData = {
   title: "Temporada de uniformes 2025",
   subtitle: "Revisa tus solicitudes y asegúrate de tener tus tallas actualizadas",
-  primary: { label: "Solicitar uniforme" },
+  secondary: { label: "Solicitar uniforme" },
   secondary: { label: "Ver calendario de entregas" },
   svgPaths: {
     p1d405500: "M8 3.33333L12.6667 8L8 12.6667",
