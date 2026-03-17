@@ -9,6 +9,10 @@ export function getMe() {
   return http.get('/api/v1/auth/me');
 }
 
+export function checkRegistrationStatus() {
+  return http.get('/api/v1/auth/status');
+}
+
 export function changePassword(data) {
   return http.put('/api/v1/auth/change-password', data);
 }

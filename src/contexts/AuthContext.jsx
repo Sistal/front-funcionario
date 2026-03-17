@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import storage from '../lib/storage';
-import { validateToken, logout as logoutApi } from '../api/auth.api';
+import { validateToken, logout as logoutApi, checkRegistrationStatus } from '../api/auth.api';
 import { getMyProfile } from '../api/funcionario.api';
+import { ENV } from '../config/env';
 
 const AuthContext = createContext(null);
 
@@ -23,21 +24,39 @@ export function AuthProvider({ children }) {
       setIsAuthenticated(true);
 
       try {
-        await getMyProfile();
-        setNeedsFuncionarioRegistration(false);
-      } catch (error) {
-        const message = String(error?.message || '').toLowerCase();
-        const backendMessage = String(error?.data?.message || '').toLowerCase();
-        const hasNoFuncionario =
-          error?.status === 401 &&
-          (message.includes('sin funcionario asociado') || backendMessage.includes('sin funcionario asociado'));
-
-        if (hasNoFuncionario) {
-          setNeedsFuncionarioRegistration(true);
-          return;
+        const response = await checkRegistrationStatus();
+        // Leemos la propiedad requiere_registro de la respuesta (por defecto falso si no viene)
+        const requiereRegistro = response?.requiere_registro || false;
+        
+        setNeedsFuncionarioRegistration(requiereRegistro);
+        
+        // Si no requiere registro, intentamos obtener su perfil para el contexto de la sesión
+        if (!requiereRegistro) {
+          await getMyProfile().catch(err => console.warn('Error al precargar perfil:', err));
         }
+        
+        console.log(ENV.VITE_API_BASE, ENV.VITE_LOGIN_URL);
+      } catch (error) {
+        // Fallback en caso de que el nuevo endpoint falle mientras el backend lo implementa
+        // Opcional: mantener retrocompatibilidad o simplemente relanzar el error
+        console.warn('No se pudo verificar el estado de registro, cayendo a validación de perfil (fallback):', error);
+        
+        try {
+          await getMyProfile();
+          setNeedsFuncionarioRegistration(false);
+        } catch (profileError) {
+          const message = String(profileError?.message || '').toLowerCase();
+          const backendMessage = String(profileError?.data?.message || '').toLowerCase();
+          const hasNoFuncionario =
+            profileError?.status === 401 &&
+            (message.includes('sin funcionario asociado') || backendMessage.includes('sin funcionario asociado'));
 
-        throw error;
+          if (hasNoFuncionario) {
+            setNeedsFuncionarioRegistration(true);
+            return;
+          }
+          throw profileError;
+        }
       }
     } catch (error) {
       console.error('Error validating token:', error);
