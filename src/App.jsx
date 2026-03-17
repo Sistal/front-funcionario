@@ -15,7 +15,7 @@ import RegistroFuncionario from './pages/RegistroFuncionario';
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/funcionario">
         <Routes>
           <Route path="/registro-funcionario" element={
             <ProtectedRoute allowWithoutFuncionario>

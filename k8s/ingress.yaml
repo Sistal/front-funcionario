@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend-funcionario-ingress
+  namespace: sistal
+  annotations:
+    # 1. Habilitamos expresiones regulares (obligatorio en NGINX moderno)
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    # 2. Corregimos el rewrite para que pase la ruta correctamente a tu app React
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    # 3. Cert-manager (esto está perfecto)
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  # 4. Forma moderna de asignar NGINX
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - sistal-dev.sistal.cl
+    secretName: sistal-dev-tls-cert
+  rules:
+  - host: sistal-dev.sistal.cl
+    http:
+      paths:
+      - path: /funcionario(/|$)(.*)
+        # 5. Cambio clave
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: front-funcionario-svc
+            port:
+              number: 3000
