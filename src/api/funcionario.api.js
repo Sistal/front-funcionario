@@ -4,6 +4,17 @@ import { funcionarioMock } from '../mocks/funcionario.mock';
 
 const useMock = ENV.USE_MOCK;
 
+// ==================== REGISTRO INICIAL ====================
+
+/**
+ * Registro de funcionario inicial por unidad de negocio
+ * Endpoint: POST /api/v1/funcionarios/registro-inicial
+ * Body: { id_empresa, id_segmento, id_sucursal }
+ */
+export function registerInitialFuncionario(data) {
+  return http.post('/api/v1/funcionarios/registro-inicial', data);
+}
+
 // ==================== PERFIL DEL USUARIO ====================
 
 /**

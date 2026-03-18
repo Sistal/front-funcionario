@@ -23,5 +23,18 @@ export const coreApi = {
   getTiposPrenda: async () => {
     if (useMock) return coreMock.getTiposPrenda();
     return http.get('/catalogo/prenda-tipos');
+  },
+  
+  getEmpresas: async () => {
+    // Sin mocks para este flujo según requerimientos
+    return http.get('/api/v1/empresas');
+  },
+
+  getSegmentos: async (idEmpresa) => {
+    return http.get(`/api/v1/empresas/${idEmpresa}/segmentos`);
+  },
+
+  getSucursales: async (idSegmento) => {
+    return http.get(`/api/v1/segmentos/${idSegmento}/sucursales`);
   }
 };
