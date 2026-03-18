@@ -63,8 +63,8 @@ export default function RegistroFuncionario() {
     setIdSucursal('');
     setSucursales([]);
     
-    if (idSegmento) {
-      coreApi.getSucursales(idSegmento)
+    if (idEmpresa) {
+      coreApi.getSucursales(idEmpresa)
         .then((data) => {
           setSucursales(Array.isArray(data) ? data : []);
         })
@@ -72,7 +72,7 @@ export default function RegistroFuncionario() {
           console.error('Error cargando sucursales:', err);
         });
     }
-  }, [idSegmento]);
+  }, [idEmpresa]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -84,7 +84,7 @@ export default function RegistroFuncionario() {
     }
 
     const payload = {
-      id_empresa: Number(idEmpresa),
+      id_empresa_cliente: Number(idEmpresa),
       id_segmento: Number(idSegmento),
       id_sucursal: Number(idSucursal)
     };
@@ -151,8 +151,8 @@ export default function RegistroFuncionario() {
                   </SelectTrigger>
                   <SelectContent>
                     {segmentos.map((segmento) => (
-                      <SelectItem key={segmento.id || segmento.id_segmento} value={String(segmento.id || segmento.id_segmento)}>
-                        {segmento.nombre || `Segmento ${segmento.id || segmento.id_segmento}`}
+                      <SelectItem key={segmento.id_segmento} value={String(segmento.id_segmento)}>
+                        {segmento.nombre_segmento}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -167,8 +167,8 @@ export default function RegistroFuncionario() {
                   </SelectTrigger>
                   <SelectContent>
                     {sucursales.map((sucursal) => (
-                      <SelectItem key={sucursal.id || sucursal.id_sucursal} value={String(sucursal.id || sucursal.id_sucursal)}>
-                        {sucursal.nombre || `Sucursal ${sucursal.id || sucursal.id_sucursal}`}
+                      <SelectItem key={sucursal.id_sucursal} value={String(sucursal.id_sucursal)}>
+                        {sucursal.nombre_sucursal}
                       </SelectItem>
                     ))}
                   </SelectContent>

@@ -31,10 +31,10 @@ export const coreApi = {
   },
 
   getSegmentos: async (idEmpresa) => {
-    return http.get(`/api/v1/empresas/${idEmpresa}/segmentos`);
+    return http.get(`/api/v1/empresas/segmentos/${idEmpresa}`);
   },
 
-  getSucursales: async (idSegmento) => {
-    return http.get(`/api/v1/segmentos/${idSegmento}/sucursales`);
+  getSucursales: async (idEmpresa) => {
+    return http.get(`/api/v1/empresas/sucursales/${idEmpresa}`);
   }
 };
