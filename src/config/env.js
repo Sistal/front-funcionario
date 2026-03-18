@@ -27,8 +27,10 @@ const getEnvValue = (key, defaultValue) => {
 
 export const ENV = {
   MODE: import.meta.env.MODE,
-  API_BASE: getEnvValue('API_BASE', 'http://localhost:8080'),
-  LOGIN_URL: getEnvValue('LOGIN_URL', 'http://localhost:5173'),
+  API_BASE: getEnvValue('API_BASE', 'https://api-sistal-dev.sistal.cl'),
+  //API_BASE: getEnvValue('API_BASE', 'http://localhost:8080'),
+  LOGIN_URL: getEnvValue('LOGIN_URL', 'https://sistal-dev.sistal.cl/login'),
+  //LOGIN_URL: getEnvValue('LOGIN_URL', 'http://localhost:5173'),
   USE_MOCK: getEnvValue('USE_MOCK', false),
 };
 
