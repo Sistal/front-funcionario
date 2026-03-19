@@ -6,8 +6,6 @@ import { ENV } from '../../config/env';
 
 const LINKS = [
   { label: "Inicio", url: "/", icon: Home },
-  { label: "Mis solicitudes", url: "/mis-solicitudes", icon: FileText },
-  { label: "Cambios de talla / prenda", url: "/cambio", icon: RefreshCw },
   { label: "Seguimiento de despachos", url: "/seguimientos", icon: Truck },
   { label: "Cambio de sucursal", url: "/sucursal", icon: Building },
   { label: "Mi cuenta", url: "/mi-cuenta", icon: User }

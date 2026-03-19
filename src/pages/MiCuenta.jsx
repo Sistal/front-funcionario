@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PersonalInfoCard } from '../components/miCuenta/PersonalInfoCard.jsx';
 import { SecurityCard } from '../components/miCuenta/SecurityCard.jsx';
-import { PreferencesCard } from '../components/miCuenta/PreferencesCard.jsx';
-import { ActivityHistoryCard } from '../components/miCuenta/ActivityHistoryCard.jsx';
 import { AccountActionsCard } from '../components/miCuenta/AccountActionsCard.jsx';
 import { getMyProfile } from '../api/funcionario.api';
 
@@ -43,8 +41,6 @@ export default function MiCuenta(){
             <div className="space-y-6">
               <PersonalInfoCard profile={profile} onUpdate={loadProfile} />
               <SecurityCard profile={profile} />
-              <PreferencesCard profile={profile} onUpdate={loadProfile} />
-              <ActivityHistoryCard />
               <AccountActionsCard/>
             </div>
           )}

@@ -22,18 +22,6 @@ export default function Hero({ data }) {
         <div className="flex gap-4 items-center mt-2">
           <CTAButton
             variant="secondary"
-            label={primary.label}
-            href="/funcionario/mis-solicitudes"
-            icon={(
-              <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 16 16">
-                <path d="M3.33333 8H12.6667" stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333" />
-                <path d={svgPaths.p1d405500} stroke="white" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.33333" />
-              </svg>
-            )}
-          />
-
-          <CTAButton
-            variant="secondary"
             label={secondary.label}
             icon={(
               <svg className="w-4 h-4" fill="none" viewBox="0 0 16 16">

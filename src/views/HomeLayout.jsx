@@ -115,16 +115,6 @@ export default function HomeLayout({ dashboardData, profile }) {
           <div className="w-full">
             <SizesCard sizes={sizesData} />
           </div>
-
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-            <UpcomingDeliveries items={upcomingDeliveryItems} svgPaths={staticData.svgPaths} />
-            <Shortcuts items={staticData.shortcuts} svgPaths={staticData.svgPaths} />
-          </div>
-
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-            <RecentRequests requests={recentRequestItems} />
-            <StatusCard counts={statusCounts} svgPaths={staticData.svgPaths} />
-          </div>
         </>
       )}
     </div>

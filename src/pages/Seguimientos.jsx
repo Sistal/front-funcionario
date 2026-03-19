@@ -26,10 +26,11 @@ export default function Seguimientos() {
         try {
             setLoading(true);
             const data = await getMyEntregas();
-            setDeliveries(data);
+            // Sobreescribir siempre con arreglo vacío como se solicitó para mostrar 0
+            setDeliveries([]);
         } catch (error) {
-            console.error('Error loading deliveries, using static data:', error);
-            setDeliveries(deliveriesData);
+            console.error('Error loading deliveries, using empty data:', error);
+            setDeliveries([]);
         } finally {
             setLoading(false);
         }
