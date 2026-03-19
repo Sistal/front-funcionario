@@ -2,10 +2,10 @@ import { mockResponse } from './utils';
 
 const catalogs = {
   campanaActiva: {
-    id: 'CAM-2025',
-    nombre: 'Temporada Invierno 2025',
-    fechaInicio: '2025-05-01',
-    fechaFin: '2025-08-31',
+    id: 'CAM-2026',
+    nombre: 'Temporada Invierno 2026',
+    fechaInicio: '2026-05-01',
+    fechaFin: '2026-08-31',
     activa: true
   },
   tallas: [

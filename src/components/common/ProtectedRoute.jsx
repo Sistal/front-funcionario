@@ -3,8 +3,8 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { ENV } from '../../config/env';
 
-export default function ProtectedRoute({ children, allowWithoutFuncionario = false }) {
-  const { isAuthenticated, loading, needsFuncionarioRegistration } = useAuth();
+export default function ProtectedRoute({ children, allowWithoutFuncionario = false, allowWithoutMedidas = false }) {
+  const { isAuthenticated, loading, needsFuncionarioRegistration, needsMedidasRegistration } = useAuth();
 
   if (loading) {
     return (
@@ -28,6 +28,17 @@ export default function ProtectedRoute({ children, allowWithoutFuncionario = fal
   }
 
   if (!needsFuncionarioRegistration && allowWithoutFuncionario) {
+    // Si no necesita registro, pero está intentando entrar a /registro-funcionario
+    return <Navigate to="/" replace />;
+  }
+
+  if (!needsFuncionarioRegistration && needsMedidasRegistration && !allowWithoutMedidas && !allowWithoutFuncionario) {
+    // Si necesita medidas y no estamos permitiendo estar sin ellas (y ya tiene funcionario)
+    return <Navigate to="/registro-medidas" replace />;
+  }
+
+  if (!needsFuncionarioRegistration && !needsMedidasRegistration && allowWithoutMedidas) {
+    // Si no necesita medidas y está intentando entrar a /registro-medidas
     return <Navigate to="/" replace />;
   }
 

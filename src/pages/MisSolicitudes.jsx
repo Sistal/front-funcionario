@@ -149,7 +149,7 @@ export default function MisSolicitudes(){
                       Cargando solicitudes...
                   </div>
               ) : showEmpty ? (
-                  <EmptyState />
+                  <EmptyState onSuccess={loadRequests} />
               ) : (
                   <RequestsTable requests={filteredRequests} />
               )}

@@ -5,7 +5,7 @@ let requests = [
   {
     id: 'SOL-001',
     tipo: 'Reposición',
-    fecha: '2025-01-15',
+    fecha: '2026-01-15',
     estado: 'En Proceso',
     items: ['Polera Institucional', 'Pantalón Cargo'],
     motivo: 'Desgaste natural'
@@ -13,7 +13,7 @@ let requests = [
   {
     id: 'SOL-002',
     tipo: 'Cambio de Talla',
-    fecha: '2025-01-20',
+    fecha: '2026-01-20',
     estado: 'Pendiente',
     items: ['Zapatos de Seguridad'],
     motivo: 'Talla incorrecta'
@@ -26,6 +26,19 @@ export const requestsMock = {
   getRequestById: (id) => {
     const req = requests.find(r => r.id === id);
     return mockResponse(req || null);
+  },
+
+  createUniforme: (data) => {
+    const newReq = {
+      id: `SOL-00${requests.length + 1}`,
+      tipo: 'Uniforme',
+      fecha: new Date().toISOString().split('T')[0],
+      estado: 'Pendiente',
+      items: data?.items || ['Uniforme Completo'],
+      ...data
+    };
+    requests.unshift(newReq);
+    return mockResponse(newReq);
   },
 
   createReposicion: (data) => {

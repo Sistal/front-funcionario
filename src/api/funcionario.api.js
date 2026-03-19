@@ -81,8 +81,8 @@ export function getActivity() {
  * Endpoint: GET /api/v1/funcionarios/{id}/medidas
  * Nota: Requiere el ID del funcionario, se obtiene desde el perfil
  */
-export function getMyMedidas(funcionarioId) {
-  return http.get(`/api/v1/funcionarios/${funcionarioId}/medidas`);
+export function getMyMedidas() {
+  return http.get(`/api/v1/funcionarios/medidas`);
 }
 
 /**
@@ -99,8 +99,8 @@ export function createMyMedidas(funcionarioId, data) {
  * Endpoint: PUT /api/v1/funcionarios/{id}/medidas
  * Body: { estatura_m, pecho_cm, cintura_cm, cadera_cm, manga_cm, fecha_fin }
  */
-export function updateMyMedidas(funcionarioId, data) {
-  return http.put(`/api/v1/funcionarios/${funcionarioId}/medidas`, data);
+export function updateMyMedidas(data) {
+  return http.put(`/api/v1/funcionarios/medidas`, data);
 }
 
 /**
@@ -109,6 +109,14 @@ export function updateMyMedidas(funcionarioId, data) {
  */
 export function getMedidasHistorial(funcionarioId) {
   return http.get(`/api/v1/funcionarios/${funcionarioId}/medidas/historial`);
+}
+
+/**
+ * Registrar medidas corporales iniciales para el funcionario autenticado
+ * Endpoint: POST /api/v1/funcionarios/medidas
+ */
+export function registerInitialMedidas(data) {
+  return http.post(`/api/v1/funcionarios/medidas`, data);
 }
 
 /**

@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
 export default defineConfig({
-  base: '/funcionario/', // Base path para servir la aplicación desde /funcionario
+  base: '/funcionario', // Base path para servir la aplicación desde /funcionario
   plugins: [react(), tailwindcss()],
   
   // Configuración del servidor de desarrollo

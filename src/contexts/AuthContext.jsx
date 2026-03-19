@@ -10,6 +10,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [needsFuncionarioRegistration, setNeedsFuncionarioRegistration] = useState(false);
+  const [needsMedidasRegistration, setNeedsMedidasRegistration] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,12 +26,12 @@ export function AuthProvider({ children }) {
 
       try {
         const response = await checkRegistrationStatus();
-        // Leemos la propiedad requiere_registro de la respuesta (por defecto falso si no viene)
         const requiereRegistro = response?.requiere_registro || false;
+        const requiereMedidas = response?.requiere_medidas || false;
         
         setNeedsFuncionarioRegistration(requiereRegistro);
+        setNeedsMedidasRegistration(requiereMedidas);
         
-        // Si no requiere registro, intentamos obtener su perfil para el contexto de la sesión
         if (!requiereRegistro) {
           await getMyProfile().catch(err => console.warn('Error al precargar perfil:', err));
         }
@@ -42,8 +43,12 @@ export function AuthProvider({ children }) {
         console.warn('No se pudo verificar el estado de registro, cayendo a validación de perfil (fallback):', error);
         
         try {
-          await getMyProfile();
+          // Si el perfil falla, asumimos que no hay funcionario
+          // O si falta medidas, lo leeríamos del perfil
+          const profile = await getMyProfile();
           setNeedsFuncionarioRegistration(false);
+          const needsMedidas = (!profile?.tallas && !profile?.medidas) ? true : false; // Heurística simple
+          setNeedsMedidasRegistration(needsMedidas);
         } catch (profileError) {
           const message = String(profileError?.message || '').toLowerCase();
           const backendMessage = String(profileError?.data?.message || '').toLowerCase();
@@ -63,6 +68,7 @@ export function AuthProvider({ children }) {
       storage.clearAuth();
       setIsAuthenticated(false);
       setNeedsFuncionarioRegistration(false);
+      setNeedsMedidasRegistration(false);
       setUser(null);
     } finally {
       setLoading(false);
@@ -74,6 +80,7 @@ export function AuthProvider({ children }) {
     setUser(userData);
     setIsAuthenticated(true);
     setNeedsFuncionarioRegistration(false);
+    setNeedsMedidasRegistration(false);
   }
 
   async function logout() {
@@ -81,6 +88,7 @@ export function AuthProvider({ children }) {
     setUser(null);
     setIsAuthenticated(false);
     setNeedsFuncionarioRegistration(false);
+    setNeedsMedidasRegistration(false);
     await logoutApi();
   }
 
@@ -88,15 +96,21 @@ export function AuthProvider({ children }) {
     setNeedsFuncionarioRegistration(false);
   }
 
+  function completeMedidasRegistration() {
+    setNeedsMedidasRegistration(false);
+  }
+
   const value = {
     user,
     isAuthenticated,
     needsFuncionarioRegistration,
+    needsMedidasRegistration,
     loading,
     login,
     logout,
     checkAuth,
     completeFuncionarioRegistration,
+    completeMedidasRegistration,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

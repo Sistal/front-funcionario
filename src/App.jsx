@@ -11,6 +11,7 @@ import Sucursal from "./pages/Sucursal";
 import MiCuenta from "./pages/MiCuenta";
 import Notificaciones from "./pages/Notificaciones";
 import RegistroFuncionario from './pages/RegistroFuncionario';
+import RegistroMedidas from './pages/RegistroMedidas';
 
 function App() {
   return (
@@ -20,6 +21,12 @@ function App() {
           <Route path="/registro-funcionario" element={
             <ProtectedRoute allowWithoutFuncionario>
               <RegistroFuncionario />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/registro-medidas" element={
+            <ProtectedRoute allowWithoutMedidas>
+              <RegistroMedidas />
             </ProtectedRoute>
           } />
 

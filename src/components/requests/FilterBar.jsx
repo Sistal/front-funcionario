@@ -1,11 +1,6 @@
-import { Button } from '../ui/Button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/Select.jsx';
-import { Plus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 export function FilterBar({ filters = {}, onChange }) {
-    const navigate = useNavigate();
-
     const handleChange = (key) => (value) => {
         if (typeof onChange === 'function') {
             onChange({ ...filters, [key]: value });
@@ -55,11 +50,6 @@ export function FilterBar({ filters = {}, onChange }) {
                     </SelectContent>
                 </Select>
             </div>
-
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white font-bold" onClick={() => navigate('/cambio')}>
-                <Plus className="w-4 h-4 mr-2" />
-                Nueva solicitud
-            </Button>
         </div>
     );
 }

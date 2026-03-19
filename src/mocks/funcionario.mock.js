@@ -21,7 +21,7 @@ let currentUser = {
 let activityLog = [
   { id: 1, action: 'Inicio de sesión', date: '2026-02-03 08:30', ip: '192.168.1.10', device: 'Chrome / Windows' },
   { id: 2, action: 'Cambio de contraseña', date: '2026-01-15 14:20', ip: '192.168.1.10', device: 'Chrome / Windows' },
-  { id: 3, action: 'Actualización perfil', date: '2025-12-10 09:15', ip: '200.14.55.2', device: 'Safari / iPhone' }
+  { id: 3, action: 'Actualización perfil', date: '2026-12-10 09:15', ip: '200.14.55.2', device: 'Safari / iPhone' }
 ];
 
 export const funcionarioMock = {

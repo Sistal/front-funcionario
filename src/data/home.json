@@ -1,6 +1,6 @@
 {
   "hero": {
-    "title": "Temporada de uniformes 2025",
+    "title": "Temporada de uniformes 2026",
     "subtitle": "Revisa tus solicitudes y asegúrate de tener tus tallas actualizadas",
     "primary": { "label": "Solicitar uniforme" },
     "secondary": { "label": "Ver calendario de entregas" },
@@ -44,9 +44,11 @@
   ],
   "sizes": {
     "general": "M",
+    "estatura": "1.75 m",
     "pecho": "96 cm",
     "cintura": "82 cm",
-    "cadera": "98 cm"
+    "cadera": "98 cm",
+    "manga": "65 cm"
   },
   "statusCounts": {
     "total": 22,

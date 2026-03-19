@@ -23,31 +23,29 @@ export default function HomeLayout({ dashboardData, profile }) {
     try {
       setLoading(true);
       
-      // Intentar cargar datos de la API, si falla usar datos estáticos
+      // Intentar cargar datos de la API, si falla devolver arrays vacíos
       try {
-        const requests = await getRecentRequests().catch(() => staticData.recentRequests);
-        const deliveries = await getUpcomingDeliveries().catch(() => staticData.upcomingDeliveries);
+        const requests = await getRecentRequests().catch(() => []);
+        const deliveries = await getUpcomingDeliveries().catch(() => []);
         
         setRecentRequests(requests);
         setUpcomingDeliveries(deliveries);
 
-        if (profile?.id) {
-          try {
-            const medidasData = await getMyMedidas(profile.id);
-            setMedidas(medidasData);
-          } catch (error) {
-            console.warn('No se pudieron cargar las medidas:', error);
-          }
+        try {
+          const medidasData = await getMyMedidas();
+          setMedidas(medidasData);
+        } catch (error) {
+          console.warn('No se pudieron cargar las medidas:', error);
         }
       } catch (apiError) {
-        console.warn('Using static data as fallback:', apiError);
-        setRecentRequests(staticData.recentRequests);
-        setUpcomingDeliveries(staticData.upcomingDeliveries);
+        console.warn('API fetch failed, falling back to empty states:', apiError);
+        setRecentRequests([]);
+        setUpcomingDeliveries([]);
       }
     } catch (error) {
       console.error('Error loading data:', error);
-      setRecentRequests(staticData.recentRequests);
-      setUpcomingDeliveries(staticData.upcomingDeliveries);
+      setRecentRequests([]);
+      setUpcomingDeliveries([]);
     } finally {
       setLoading(false);
     }
@@ -58,13 +56,15 @@ export default function HomeLayout({ dashboardData, profile }) {
     ? `${profile.nombres} ${profile.apellido_paterno}`
     : profile?.nombre_completo || "Usuario";
 
-  // Construir datos de tallas desde las medidas cargadas
+  // Construir datos de tallas desde las medidas cargadas o dejar vacío si no hay
   const sizesData = medidas ? {
     general: calcularTallaGeneral(medidas), 
+    estatura: medidas.estatura_m ? `${medidas.estatura_m} m` : "-",
     pecho: medidas.pecho_cm ? `${medidas.pecho_cm} cm` : "-",
     cintura: medidas.cintura_cm ? `${medidas.cintura_cm} cm` : "-",
-    cadera: medidas.cadera_cm ? `${medidas.cadera_cm} cm` : "-"
-  } : staticData.sizes;
+    cadera: medidas.cadera_cm ? `${medidas.cadera_cm} cm` : "-",
+    manga: medidas.manga_cm ? `${medidas.manga_cm} cm` : "-"
+  } : { general: "-", estatura: "-", pecho: "-", cintura: "-", cadera: "-", manga: "-" };
 
   // Calcular talla general basándose en las medidas
   function calcularTallaGeneral(medidas) {
@@ -113,7 +113,7 @@ export default function HomeLayout({ dashboardData, profile }) {
       ) : (
         <>
           <div className="w-full">
-            <RecentRequests requests={recentRequestItems} />
+            <SizesCard sizes={sizesData} />
           </div>
 
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -122,7 +122,7 @@ export default function HomeLayout({ dashboardData, profile }) {
           </div>
 
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-            <SizesCard sizes={sizesData} />
+            <RecentRequests requests={recentRequestItems} />
             <StatusCard counts={statusCounts} svgPaths={staticData.svgPaths} />
           </div>
         </>

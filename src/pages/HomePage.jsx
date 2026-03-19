@@ -4,7 +4,7 @@ import HomeLayout from "../views/HomeLayout";
 import { getDashboardStats, getMyProfile } from "../api/funcionario.api";
 
 const defaultHeroData = {
-  title: "Temporada de uniformes 2025",
+  title: "Temporada de uniformes 2026",
   subtitle: "Revisa tus solicitudes y asegúrate de tener tus tallas actualizadas",
   primary: { label: "Solicitar uniforme" },
   secondary: { label: "Ver calendario de entregas" },
